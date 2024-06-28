@@ -1,13 +1,9 @@
-name: Flutter PR
+name: Flutter CI/CD
 
 on:
   pull_request:
     branches:
-      - "dev/sprint-**"
-    paths-ignore:
-      - "docs/**"
-      - "openapi/**"
-      - ".vscode/**"
+      - "main"
 
 jobs:
   build:
@@ -33,7 +29,7 @@ jobs:
       - uses: actions/upload-artifact@v1
         with:
           name: APK for QA
-          path: build/app/outputs/apk/dev/debug/apk_name.apk
+          path: build/app/outputs/apk/dev/debug/flanner.apk
 
       - name: Upload artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
