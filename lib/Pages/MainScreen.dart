@@ -20,9 +20,9 @@ final bottomNavIndexProvider = StateNotifierProvider<BottomNavIndexNotifier, int
   return BottomNavIndexNotifier();
 });
 
-void main() {
-  runApp(ProviderScope(child: MainScreen()));
-}
+// void main() {
+//   runApp(ProviderScope(child: MainScreen()));
+// }
 
 class MainScreen extends ConsumerWidget {
 
