@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flanner/MainScreen.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'Pages/Theme/Theme.dart';
+import 'Pages/MainScreen.dart';
 
 void main() {
-  runApp(MainScreen());
+  runApp(ProviderScope(child: MainScreen()));
 }
