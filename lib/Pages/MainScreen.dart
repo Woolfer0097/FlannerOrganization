@@ -4,7 +4,7 @@ import 'Theme/Theme.dart';
 import 'ButtonsComponent.dart' as Buttons;
 
 import 'NotesScreen.dart';
-import 'CalendarScreen.dart';
+// import 'CalendarScreen.dart';
 import 'HabbitsScreen.dart';
 import 'SportsScreen.dart';
 
@@ -25,12 +25,12 @@ void main() {
 }
 
 class MainScreen extends ConsumerWidget {
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.watch(themeNotifierProvider);
     final currentIndex = ref.watch(bottomNavIndexProvider);
     final Buttons.ButtonsComponent buttons = Buttons.ButtonsComponent();
+
 
     final textStyle = TextStyle(
       color: theme.appBarTheme.titleTextStyle?.color,
@@ -41,25 +41,61 @@ class MainScreen extends ConsumerWidget {
       NotesScreen(),
       CalendarScreen(),
       HomeScreen(buttons: buttons, theme: theme, textStyle: textStyle),
-      HabbitsScreen(),
+      HabitsDisplayScreen(),
       SportScreen(),
     ];
+    final List<AppBar> appBars = [
+      AppBar(
+        title: Text('Notes', style: textStyle),
+        backgroundColor: theme.scaffoldBackgroundColor,
+      ),
+      AppBar(
+        title: Text('Calendar', style: textStyle),
+        backgroundColor: theme.scaffoldBackgroundColor,
+      ),
+      AppBar(
+        title: Text('Flanner', style: textStyle),
+        backgroundColor: theme.scaffoldBackgroundColor,
+        actions: [
+          ElevatedButton(
+            onPressed: () => ref.read(themeNotifierProvider.notifier).changeTheme(),
+            child: Icon(Icons.dark_mode),
+          ),
+        ],
+      ),
+      AppBar(
+        title: Text(
+          'Habit Tracker',
+          style: textStyle,
+          textAlign: TextAlign.center,
+        ),
+        backgroundColor: theme.scaffoldBackgroundColor,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AddHabitScreen()),
+              );
+            },
+          ),
+          ElevatedButton(
+            onPressed: () => ref.read(themeNotifierProvider.notifier).changeTheme(),
+            child: Icon(Icons.dark_mode),
+          ),
+        ],
+      ),
+      AppBar(
+        title: Text('Calories Burned Calculator', style: textStyle),
+        backgroundColor: theme.scaffoldBackgroundColor,
+      ),
+    ];
+
 
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            'Flanner',
-            style: textStyle,
-          ),
-          backgroundColor: theme.scaffoldBackgroundColor,
-          actions: [
-            ElevatedButton(
-              onPressed: () => ref.read(themeNotifierProvider.notifier).changeTheme(),
-              child: Icon(Icons.dark_mode),
-            ),
-          ],
-        ),
+        appBar: appBars[currentIndex], // Display the selected AppBar
         body: screens[currentIndex], // Display the selected screen
         bottomNavigationBar: BottomNavigationBar(
           backgroundColor: theme.scaffoldBackgroundColor,
