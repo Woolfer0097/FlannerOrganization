@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flanner/Pages/Theme/Theme.dart';
 
-
-
+// Light Theme
 final ThemeData lightTheme = ThemeData(
   dialogBackgroundColor: Colors.white,
   scaffoldBackgroundColor: Colors.white,
-  appBarTheme: AppBarTheme(
+  appBarTheme: const AppBarTheme(
     titleTextStyle: TextStyle(
       inherit: true,
       color: Colors.black,
@@ -16,7 +14,7 @@ final ThemeData lightTheme = ThemeData(
     elevation: 0,
   ),
   primaryColor: Colors.white,
-  buttonTheme: ButtonThemeData(
+  buttonTheme: const ButtonThemeData(
     buttonColor: Color(0xE2B8FF),
     disabledColor: Colors.white,
     textTheme: ButtonTextTheme.primary,
@@ -43,15 +41,16 @@ final ThemeData lightTheme = ThemeData(
       }),
     ),
   ),
-  iconTheme: IconThemeData(
+  iconTheme: const IconThemeData(
     color: Color(0xE2B8FF),
   ),
 );
 
+// Dark Theme
 final ThemeData darkTheme = ThemeData(
   dialogBackgroundColor: Colors.black,
   scaffoldBackgroundColor: Colors.black,
-  appBarTheme: AppBarTheme(
+  appBarTheme: const AppBarTheme(
     titleTextStyle: TextStyle(
       inherit: true,
       color: Colors.white,
@@ -60,7 +59,7 @@ final ThemeData darkTheme = ThemeData(
     elevation: 0,
   ),
   primaryColor: Colors.black,
-  buttonTheme: ButtonThemeData(
+  buttonTheme: const ButtonThemeData(
     buttonColor: Color(0xE2B8FF),
     disabledColor: Colors.black,
     textTheme: ButtonTextTheme.primary,
@@ -87,11 +86,12 @@ final ThemeData darkTheme = ThemeData(
       }),
     ),
   ),
-  iconTheme: IconThemeData(
+  iconTheme: const IconThemeData(
     color: Color(0xE2B8FF),
   ),
 );
 
+// Theme Notifier
 class ThemeNotifier extends StateNotifier<ThemeData> {
   ThemeNotifier() : super(lightTheme);
 
@@ -100,6 +100,20 @@ class ThemeNotifier extends StateNotifier<ThemeData> {
   }
 }
 
+// Theme Notifier Provider
 final themeNotifierProvider = StateNotifierProvider<ThemeNotifier, ThemeData>((ref) {
   return ThemeNotifier();
+});
+
+// Button State Notifier
+class ButtonStateNotifier extends StateNotifier<Color> {
+  ButtonStateNotifier() : super(Colors.white);
+
+  void changeColor(Color color) {
+    state = color;
+  }
+}
+
+final buttonStateProvider = StateNotifierProvider<ButtonStateNotifier, Color>((ref) {
+  return ButtonStateNotifier();
 });

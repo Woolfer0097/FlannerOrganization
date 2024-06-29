@@ -2,58 +2,55 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'Theme/Theme.dart';
 
+class ButtonsComponent {
+  final ThemeData themeData;
 
-class ButtonsComponent{
-
-  ButtonsComponent() {}
+  ButtonsComponent(this.themeData);
 
   Widget buildMenuButton(String label) {
-    bool isPressed = false;
-
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: isPressed ? Color(0xE2B8FF) : Colors.white,
-        textStyle: isPressed ? TextStyle(color: Colors.white) : TextStyle(color: Colors.black),
+        backgroundColor: themeData.elevatedButtonTheme.style?.backgroundColor?.resolve({}) ?? themeData.primaryColor,
+        textStyle: themeData.elevatedButtonTheme.style?.textStyle?.resolve({}) ?? TextStyle(color: themeData.primaryColor),
       ),
-      onPressed: () {
-        isPressed = !isPressed;
-      },
+      onPressed: () {},
       child: Text(label),
     );
   }
 
-  Widget buildTabButton(String label, ElevatedButtonThemeData color, TextStyle textStyle) {
+  Widget buildTabButton(String label) {
     return ElevatedButton(
-      style: color.style,
+      style: themeData.elevatedButtonTheme.style,
       onPressed: () {},
-      child: Text(label, style: textStyle),
+      child: Text(label),
     );
   }
 
   Widget buildTimeButton(String label) {
     return OutlinedButton(
       style: OutlinedButton.styleFrom(
-        side: BorderSide(color: Colors.white),
-        backgroundColor: Colors.white,
+        side: BorderSide(color: themeData.primaryColor),
+        backgroundColor: themeData.scaffoldBackgroundColor,
+        textStyle: TextStyle(color: themeData.primaryColor),
       ),
       onPressed: () {},
       child: Text(label),
     );
   }
 
-  Widget buildTaskCard(String label, Color color) {
+  Widget buildTaskCard(String label) {
     return Card(
-      color: color,
+      color: themeData.cardColor,
       child: ListTile(
         title: Text(label),
-        trailing: Icon(Icons.more_vert),
+        trailing: Icon(Icons.more_vert, color: themeData.iconTheme.color),
       ),
     );
   }
 
-  Widget buildCompletedTaskCard(String label, Color color) {
+  Widget buildCompletedTaskCard(String label) {
     return Card(
-      color: color,
+      color: themeData.cardColor,
       child: ListTile(
         title: Text(label),
         trailing: Icon(Icons.check, color: Colors.green),
@@ -61,9 +58,9 @@ class ButtonsComponent{
     );
   }
 
-  Widget buildAddTaskButton(String label, Color color) {
+  Widget buildAddTaskButton(String label) {
     return Card(
-      color: color,
+      color: themeData.cardColor,
       child: ListTile(
         title: Text(label),
         trailing: Icon(Icons.add, color: Colors.purple),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart' hide ChangeNotifierProvider;
 import 'Theme/Theme.dart';
 import 'ButtonsComponent.dart' as Buttons;
 
@@ -28,9 +29,9 @@ class MainScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.watch(themeNotifierProvider);
+    final buttontheme = ref.watch(buttonStateProvider);
     final currentIndex = ref.watch(bottomNavIndexProvider);
-    final Buttons.ButtonsComponent buttons = Buttons.ButtonsComponent();
-
+    final Buttons.ButtonsComponent buttons = Buttons.ButtonsComponent(theme);
 
     final textStyle = TextStyle(
       color: theme.appBarTheme.titleTextStyle?.color,
@@ -41,7 +42,7 @@ class MainScreen extends ConsumerWidget {
       NotesScreen(),
       CalendarScreen(),
       HomeScreen(buttons: buttons, theme: theme, textStyle: textStyle),
-      HabitsDisplayScreen(),
+      HabitTrackerScreen(),
       SportScreen(),
     ];
     final List<AppBar> appBars = [
@@ -93,23 +94,27 @@ class MainScreen extends ConsumerWidget {
     ];
 
 
-    return MaterialApp(
-      home: Scaffold(
-        appBar: appBars[currentIndex], // Display the selected AppBar
-        body: screens[currentIndex], // Display the selected screen
-        bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: theme.scaffoldBackgroundColor,
-          selectedItemColor: Colors.purple,
-          unselectedItemColor: Colors.black45,
-          currentIndex: currentIndex,
-          onTap: (index) => ref.read(bottomNavIndexProvider.notifier).setIndex(index),
-          items: [
-            BottomNavigationBarItem(icon: Icon(Icons.notes), label: "Notes"),
-            BottomNavigationBarItem(icon: Icon(Icons.calendar_month), label: "Calendar"),
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-            BottomNavigationBarItem(icon: Icon(Icons.task), label: "Tasks"),
-            BottomNavigationBarItem(icon: Icon(Icons.local_fire_department_rounded), label: "Sport"),
-          ],
+    return ChangeNotifierProvider(
+      create: (context) => HabitProvider(),
+      child: MaterialApp(
+        theme: theme,
+        home: Scaffold(
+          appBar: appBars[currentIndex], // Display the selected AppBar
+          body: screens[currentIndex], // Display the selected screen
+          bottomNavigationBar: BottomNavigationBar(
+            backgroundColor: theme.scaffoldBackgroundColor,
+            selectedItemColor: Colors.purple,
+            unselectedItemColor: Colors.black45,
+            currentIndex: currentIndex,
+            onTap: (index) => ref.read(bottomNavIndexProvider.notifier).setIndex(index),
+            items: [
+              BottomNavigationBarItem(icon: Icon(Icons.notes), label: "Notes"),
+              BottomNavigationBarItem(icon: Icon(Icons.calendar_month), label: "Calendar"),
+              BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+              BottomNavigationBarItem(icon: Icon(Icons.task), label: "Tasks"),
+              BottomNavigationBarItem(icon: Icon(Icons.local_fire_department_rounded), label: "Sport"),
+            ],
+          ),
         ),
       ),
     );
@@ -129,36 +134,62 @@ class HomeScreen extends StatelessWidget {
       color: theme.primaryColor,
       child: Column(
         children: [
-          // Top Tabs
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                buttons.buildTabButton('Daily', theme.elevatedButtonTheme, textStyle),
-                buttons.buildTabButton('Weekly', theme.elevatedButtonTheme, textStyle),
-                buttons.buildTabButton('Overall', theme.elevatedButtonTheme, textStyle),
+                buttons.buildTabButton('Daily'),
+                buttons.buildTabButton('Weekly'),
+                buttons.buildTabButton('Overall'),
               ],
             ),
           ),
           // Time of Day Buttons
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                buttons.buildTimeButton('All'),
-                buttons.buildTimeButton('Morning'),
-                buttons.buildTimeButton('Afternoon'),
-                buttons.buildTimeButton('Evening'),
-              ],
+            // child: Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //   children: [
+            //     buttons.buildTimeButton('All'),
+            //     buttons.buildTimeButton('Morning'),
+            //     buttons.buildTimeButton('Afternoon'),
+            //     buttons.buildTimeButton('Evening'),
+            //   ],
+            // ),
+            child: Container(
+              
+              child: NavigationBar(
+                onDestinationSelected: (int index) {},
+                backgroundColor: theme.scaffoldBackgroundColor,
+                labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
+                selectedIndex: 0,
+                destinations: [
+                  NavigationDestination(
+                    icon: Icon(Icons.alarm),
+                    label: 'All',
+                  ),
+                  NavigationDestination(
+                    icon: Icon(Icons.alarm),
+                    label: 'Morning',
+                  ),
+                  NavigationDestination(
+                    icon: Icon(Icons.alarm),
+                    label: 'Afternoon',
+                  ),
+                  NavigationDestination(
+                    icon: Icon(Icons.alarm),
+                    label: 'Evening',
+                  ),
+                ],
+              ),
             ),
           ),
           // Task List
           Expanded(
             child: ListView(
               children: [
-                buttons.buildTaskCard('Task 1', Colors.red),
+                buttons.buildTaskCard('Task 1'),
               ],
             ),
           ),
