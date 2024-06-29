@@ -8,6 +8,7 @@ import 'NotesScreen.dart';
 // import 'CalendarScreen.dart';
 import 'HabbitsScreen.dart';
 import 'SportsScreen.dart';
+import 'AddNoteScreen.dart';
 
 class BottomNavIndexNotifier extends StateNotifier<int> {
   BottomNavIndexNotifier() : super(2); // Default index is 2 (Home)
