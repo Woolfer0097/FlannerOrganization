@@ -173,7 +173,10 @@ class Habit {
   double getProgress() {
     final totalPlannedDays = endDate
         .difference(DateTime.now())
-        .inDays + 1;
+        .inDays + 2;
+    if (kDebugMode) {
+      print('totalPlannedDays: $totalPlannedDays');
+    }
     if (totalPlannedDays == 0) return 0;
     return getCompletedDays() / totalPlannedDays;
   }
@@ -190,7 +193,7 @@ class Habit {
   int getCurrentDays() {
     final totalPlannedDays = endDate
         .difference(DateTime.now())
-        .inDays + 1;
+        .inDays + 2;
     return totalPlannedDays - getSkippedDays();
   }
 }
@@ -264,7 +267,7 @@ class HabitCard extends StatelessWidget {
             Text(
               '${habit.getCompletedDays()} / ${(habit.endDate
                   .difference(DateTime.now())
-                  .inDays + 1)} days completed',
+                  .inDays + 2)} days completed',
               style: TextStyle(fontSize: 12),
             ),
             Text(
@@ -292,17 +295,6 @@ class HabitCard extends StatelessWidget {
                 onPressed: () {
                   Provider.of<HabitProvider>(context, listen: false)
                       .updateHabit(habit, true);
-                  if (habit.getCompletedDays() == habit.getCurrentDays()) {
-                    // if (kDebugMode) {
-                    //   print("GOAL COMPLETED");
-                    // }
-                    habit.completeGoal();
-                    Provider.of<HabitProvider>(context, listen: false)
-                        .removeHabit(habit);
-                    // if (kDebugMode) {
-                    //   print(habit.achievements);
-                    // }
-                  }
                 },
                 child: Text('Complete'),
               ),

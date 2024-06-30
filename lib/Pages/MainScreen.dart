@@ -137,6 +137,7 @@ class MainScreen extends ConsumerWidget {
     return ChangeNotifierProvider(
       create: (context) => HabitProvider(),
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         theme: theme,
         home: Scaffold(
           appBar: appBars[currentIndex], // Display the selected AppBar
