@@ -48,10 +48,22 @@ class MainScreen extends ConsumerWidget {
       AppBar(
         title: Text('Notes', style: textStyle),
         backgroundColor: theme.scaffoldBackgroundColor,
+        actions: [
+          ElevatedButton(
+            onPressed: () => ref.read(themeNotifierProvider.notifier).changeTheme(),
+            child: Icon(Icons.dark_mode),
+          ),
+        ],
       ),
       AppBar(
         title: Text('Calendar', style: textStyle),
         backgroundColor: theme.scaffoldBackgroundColor,
+        actions: [
+          ElevatedButton(
+            onPressed: () => ref.read(themeNotifierProvider.notifier).changeTheme(),
+            child: Icon(Icons.dark_mode),
+          ),
+        ],
       ),
       AppBar(
         title: Text('Flanner', style: textStyle),
@@ -113,6 +125,12 @@ class MainScreen extends ConsumerWidget {
       AppBar(
         title: Text('Calories Burned Calculator', style: textStyle),
         backgroundColor: theme.scaffoldBackgroundColor,
+        actions: [
+          ElevatedButton(
+            onPressed: () => ref.read(themeNotifierProvider.notifier).changeTheme(),
+            child: Icon(Icons.dark_mode),
+          ),
+        ],
       ),
     ];
 
@@ -152,6 +170,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: Consumer<HabitProvider>(
         builder: (context, habitProvider, child) {
