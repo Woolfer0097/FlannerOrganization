@@ -16,7 +16,7 @@ final ThemeData lightTheme = ThemeData(
   ),
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     backgroundColor: Colors.white,
-    selectedItemColor: Colors.blue,
+    selectedItemColor: Colors.purple,
     unselectedItemColor: Colors.grey,
   ),
   textTheme: TextTheme(
@@ -41,8 +41,8 @@ final ThemeData darkTheme = ThemeData(
   ),
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     backgroundColor: Colors.black,
-    selectedItemColor: Colors.purple,
-    unselectedItemColor: Colors.grey,
+    selectedItemColor: Colors.purple[200],
+    unselectedItemColor: Colors.white,
   ),
   textTheme: TextTheme(
     bodyLarge: TextStyle(color: Colors.white),
