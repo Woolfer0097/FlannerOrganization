@@ -3,7 +3,7 @@ name: Flutter CI/CD
 on:
   pull_request:
     branches:
-      - "main"
+      - "master"
 
 jobs:
   build:

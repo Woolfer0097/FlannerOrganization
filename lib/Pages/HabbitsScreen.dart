@@ -1,11 +1,12 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'AchievementsPage.dart';
 import 'Theme/Theme.dart';
 import 'ButtonsComponent.dart' as Buttons;
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'dart:convert';
-
 
 class HabitsDisplayScreen extends StatelessWidget {
   @override
@@ -21,19 +22,46 @@ class HabitsDisplayScreen extends StatelessWidget {
 
 class HabitProvider extends ChangeNotifier {
   List<Habit> _habits = [];
-  DateTime _selectedDate = DateTime.now();
+  List<Achievement> _achievements = [];
 
   HabitProvider() {
     loadHabits();
+    loadAchievements();
   }
 
   List<Habit> get habits => _habits;
+  List<Achievement> get achievements => _achievements;
+
+  // Date selected on the calendar
+  DateTime _selectedDate = DateTime.now();
 
   DateTime get selectedDate => _selectedDate;
+
+  void setSelectedDate(DateTime date) {
+    _selectedDate = date;
+    notifyListeners();
+  }
 
   void addHabit(Habit habit) {
     _habits.add(habit);
     saveHabits();
+    notifyListeners();
+  }
+
+  void updateHabit(Habit habit, bool completed) {
+    habit.dates[DateUtils.dateOnly(_selectedDate)] = completed;
+    if (!completed) {
+      habit.dates[DateUtils.dateOnly(_selectedDate)] = true;
+    }
+    if (habit.getProgress() == 1.0) {
+      habit.completeGoal();
+      _achievements.add(habit.achievements.last);
+      _habits.remove(habit);
+      saveAchievements();
+      saveHabits();
+    } else {
+      saveHabits();
+    }
     notifyListeners();
   }
 
@@ -43,54 +71,71 @@ class HabitProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateHabit(Habit habit, bool isCompleted) {
-    habit.dates[DateUtils.dateOnly(_selectedDate)] = isCompleted;
-    saveHabits();
+  // Saving habits to shared preferences
+  Future<void> saveHabits() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> habitStrings = _habits.map((habit) => json.encode(habit.toMap())).toList();
+    await prefs.setStringList('habits', habitStrings);
+  }
+
+  // Loading habits from shared preferences
+  Future<void> loadHabits() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String>? habitStrings = prefs.getStringList('habits');
+    if (habitStrings != null) {
+      _habits = habitStrings.map((habitString) => Habit.fromMap(json.decode(habitString))).toList();
+    }
     notifyListeners();
   }
 
-  void setSelectedDate(DateTime date) {
-    _selectedDate = date;
-    notifyListeners();
+  // Saving achievements to shared preferences
+  Future<void> saveAchievements() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> achievementStrings = _achievements.map((achievement) => json.encode(achievement.toMap())).toList();
+    await prefs.setStringList('achievements', achievementStrings);
   }
 
-  void saveHabits() async {
+  // Loading achievements from shared preferences
+  Future<void> loadAchievements() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> habitsString = _habits.map((habit) => jsonEncode(habit.toMap())).toList();
-    prefs.setStringList('habits', habitsString);
-  }
-
-  void loadHabits() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> habitsString = prefs.getStringList('habits') ?? [];
-    _habits = habitsString.map((string) => Habit.fromMap(jsonDecode(string))).toList();
+    List<String>? achievementStrings = prefs.getStringList('achievements');
+    if (achievementStrings != null) {
+      _achievements = achievementStrings.map((achievementString) => Achievement.fromMap(json.decode(achievementString))).toList();
+    }
     notifyListeners();
   }
 }
 
-// Define a Habit class
 class Habit {
   String title;
   String description;
+  DateTime startDate;
   DateTime endDate; // Track the end date for the habit goal
   Map<DateTime, bool> dates; // Track completed days
-  Map<DateTime, bool> skippedDates; // Track skipped days
+  bool isCompleted; // Flag to check if the habit's goal is completed
+  List<Achievement> achievements; // List of achievements earned
 
   Habit({
     required this.title,
     required this.description,
+    required this.startDate,
     required this.endDate,
     required this.dates,
-    required this.skippedDates,
+    this.isCompleted = false,
+    this.achievements = const [],
   });
 
   Map<String, dynamic> toMap() {
     return {
       'title': title,
       'description': description,
+      'start_date': startDate.toIso8601String(),
       'end_date': endDate.toIso8601String(),
-      'dates': dates.map((key, value) => MapEntry(key.toIso8601String(), value)),
-      'skipped_dates': skippedDates.map((key, value) => MapEntry(key.toIso8601String(), value)),
+      'dates':
+          dates.map((key, value) => MapEntry(key.toIso8601String(), value)),
+      'is_completed': isCompleted,
+      'achievements':
+          achievements.map((achievement) => achievement.toMap()).toList(),
     };
   }
 
@@ -98,22 +143,33 @@ class Habit {
     return Habit(
       title: map['title'],
       description: map['description'],
+      startDate: DateTime.parse(map['start_date']),
       endDate: DateTime.parse(map['end_date']),
-      dates: (map['dates'] as Map<String, dynamic>).map((key, value) => MapEntry(DateTime.parse(key), value as bool)),
-      skippedDates: (map['skipped_dates'] as Map<String, dynamic>).map((key, value) => MapEntry(DateTime.parse(key), value as bool)),
+      dates: (map['dates'] as Map<String, dynamic>)
+          .map((key, value) => MapEntry(DateTime.parse(key), value as bool)),
+      isCompleted: map['is_completed'],
+      achievements: (map['achievements'] as List<dynamic>)
+          .map((achievement) => Achievement.fromMap(achievement))
+          .toList(),
     );
   }
 
   bool isPlannedFor(DateTime day) {
-    return day.isBefore(endDate) || isSameDay(day, endDate);
+    // if (kDebugMode) {
+    //   print(startDate);
+    //   print(day);
+    //   print(endDate);
+    // }
+    return (day.isAfter(startDate.subtract(Duration(days: 1))) &&
+        day.isBefore(endDate.add(Duration(days: 1))));
   }
 
   int getCompletedDays() {
-    return dates.values.where((isCompleted) => isCompleted).length;
+    return dates.values.where((value) => value == true).length;
   }
 
   int getSkippedDays() {
-    return skippedDates.length;
+    return dates.values.where((value) => value == false).length;
   }
 
   double getProgress() {
@@ -121,22 +177,97 @@ class Habit {
     if (totalPlannedDays == 0) return 0;
     return getCompletedDays() / totalPlannedDays;
   }
+
+  void completeGoal() {
+    isCompleted = true;
+    achievements.add(Achievement(
+      title: '$title Goal Completed!',
+      description: 'Congratulations! You have completed the $title habit goal.',
+      dateAchieved: endDate,
+    ));
+  }
+
+  int getCurrentDays() {
+    final totalPlannedDays = endDate.difference(DateTime.now()).inDays + 1;
+    return totalPlannedDays - getSkippedDays();
+  }
 }
 
+class Achievement {
+  String title;
+  String description;
+  DateTime dateAchieved;
+
+  Achievement({
+    required this.title,
+    required this.description,
+    required this.dateAchieved,
+  });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'title': title,
+      'description': description,
+      'date_achieved': dateAchieved.toIso8601String(),
+    };
+  }
+
+  factory Achievement.fromMap(Map<String, dynamic> map) {
+    return Achievement(
+      title: map['title'],
+      description: map['description'],
+      dateAchieved: DateTime.parse(map['date_achieved']),
+    );
+  }
+}
 
 class HabitTrackerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Consumer<HabitProvider>(
-      builder: (context, habitProvider, child) {
-        return ListView.builder(
-          itemCount: habitProvider.habits.length,
-          itemBuilder: (context, index) {
-            Habit habit = habitProvider.habits[index];
-            return HabitCard(habit: habit);
-          },
-        );
-      },
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Habit Tracker'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.calendar_today),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => CalendarScreen()),
+              );
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AddHabitScreen()),
+              );
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.star),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AchievementsScreen()),
+              );
+            },
+          ),
+        ],
+      ),
+      body: Consumer<HabitProvider>(
+        builder: (context, habitProvider, child) {
+          return ListView.builder(
+            itemCount: habitProvider.habits.length,
+            itemBuilder: (context, index) {
+              Habit habit = habitProvider.habits[index];
+              return HabitCard(habit: habit);
+            },
+          );
+        },
+      ),
     );
   }
 }
@@ -168,40 +299,50 @@ class HabitCard extends StatelessWidget {
             ),
             Text(
               '${habit.getSkippedDays()} days skipped',
-              style: TextStyle(fontSize: 12, color: Colors.red),
+              style: TextStyle(fontSize: 12, color: Colors.red.shade400),
             ),
           ],
         ),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            TextButton(
-              style: TextButton.styleFrom(foregroundColor: Colors.red.shade400),
-              onPressed: () {
-                DateTime today = DateTime.now();
-                if (habit.isPlannedFor(today)) {
-                  Provider.of<HabitProvider>(context, listen: false).updateHabit(habit, false);
-                }
-              },
-              child: Text('Skip'),
-            ),
-            TextButton(
-              style: TextButton.styleFrom(foregroundColor: Colors.green.shade400),
-              onPressed: () {
-                DateTime today = DateTime.now();
-                if (habit.isPlannedFor(today)) {
-                  Provider.of<HabitProvider>(context, listen: false).updateHabit(habit, true);
-                }
-              },
-              child: Text('Complete'),
-            ),
+            if (!habit.isCompleted && habit.isPlannedFor(DateTime.now())) ...[
+              TextButton(
+                style:
+                    TextButton.styleFrom(foregroundColor: Colors.red.shade400),
+                onPressed: () {
+                  Provider.of<HabitProvider>(context, listen: false)
+                      .updateHabit(habit, false);
+                },
+                child: const Text('Skip'),
+              ),
+              TextButton(
+                style: TextButton.styleFrom(
+                    foregroundColor: Colors.green.shade400),
+                onPressed: () {
+                  Provider.of<HabitProvider>(context, listen: false)
+                      .updateHabit(habit, true);
+                  if (habit.getCompletedDays() == habit.getCurrentDays()) {
+                    // if (kDebugMode) {
+                    //   print("GOAL COMPLETED");
+                    // }
+                    habit.completeGoal();
+                    Provider.of<HabitProvider>(context, listen: false)
+                        .removeHabit(habit);
+                    // if (kDebugMode) {
+                    //   print(habit.achievements);
+                    // }
+                  }
+                },
+                child: Text('Complete'),
+              ),
+            ],
           ],
         ),
       ),
     );
   }
 }
-
 
 class AddHabitScreen extends StatefulWidget {
   @override
@@ -276,7 +417,9 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                   // No need to save as _endDate is already set
                 },
                 controller: TextEditingController(
-                  text: _endDate != null ? _endDate!.toLocal().toString().split(' ')[0] : '',
+                  text: _endDate != null
+                      ? _endDate!.toLocal().toString().split(' ')[0]
+                      : '',
                 ),
               ),
               SizedBox(height: 20),
@@ -287,11 +430,12 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                     Habit newHabit = Habit(
                       title: _title,
                       description: _description,
+                      startDate: DateTime.now(),
                       endDate: _endDate!,
                       dates: {},
-                      skippedDates: {},
                     );
-                    Provider.of<HabitProvider>(context, listen: false).addHabit(newHabit);
+                    Provider.of<HabitProvider>(context, listen: false)
+                        .addHabit(newHabit);
                     Navigator.pop(context);
                   }
                 },
@@ -304,7 +448,6 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
     );
   }
 }
-
 
 class CalendarScreen extends StatefulWidget {
   @override
@@ -334,10 +477,17 @@ class _CalendarScreenState extends State<CalendarScreen> {
             headerStyle: HeaderStyle(formatButtonVisible: false),
             calendarBuilders: CalendarBuilders(
               defaultBuilder: (context, day, focusedDay) {
-                bool isCompleted = Provider.of<HabitProvider>(context, listen: false).habits.any((habit) {
-                  return habit.dates.containsKey(DateUtils.dateOnly(day)) && habit.dates[DateUtils.dateOnly(day)]!;
+                bool isCompleted =
+                    Provider.of<HabitProvider>(context, listen: false)
+                        .habits
+                        .any((habit) {
+                  return habit.dates.containsKey(DateUtils.dateOnly(day)) &&
+                      habit.dates[DateUtils.dateOnly(day)]!;
                 });
-                bool isHabitDay = Provider.of<HabitProvider>(context, listen: false).habits.any((habit) {
+                bool isHabitDay =
+                    Provider.of<HabitProvider>(context, listen: false)
+                        .habits
+                        .any((habit) {
                   return habit.dates.containsKey(DateUtils.dateOnly(day));
                 });
                 if (isHabitDay) {
@@ -371,23 +521,31 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 _selectedDay = selectedDay;
                 _focusedDay = focusedDay;
               });
-              Provider.of<HabitProvider>(context, listen: false).setSelectedDate(selectedDay);
+              Provider.of<HabitProvider>(context, listen: false)
+                  .setSelectedDate(selectedDay);
             },
           ),
           Expanded(
             child: Consumer<HabitProvider>(
               builder: (context, habitProvider, child) {
                 DateTime selectedDate = habitProvider.selectedDate;
-                List<Habit> completedHabits = habitProvider.habits.where((habit) {
-                  return habit.dates.containsKey(DateUtils.dateOnly(selectedDate)) &&
+                List<Habit> completedHabits =
+                    habitProvider.habits.where((habit) {
+                  return habit.dates
+                          .containsKey(DateUtils.dateOnly(selectedDate)) &&
                       habit.dates[DateUtils.dateOnly(selectedDate)] == true;
                 }).toList();
                 List<Habit> plannedHabits = habitProvider.habits.where((habit) {
-                  return !habit.dates.containsKey(DateUtils.dateOnly(selectedDate)) &&
+                  return !habit.dates
+                          .containsKey(DateUtils.dateOnly(selectedDate)) &&
                       habit.isPlannedFor(selectedDate);
                 }).toList();
                 List<Habit> skippedHabits = habitProvider.habits.where((habit) {
-                  return habit.skippedDates.containsKey(DateUtils.dateOnly(selectedDate));
+                  return habit.dates.entries
+                      .where((entry) =>
+                          entry.value == false &&
+                          entry.key == DateUtils.dateOnly(selectedDate))
+                      .isNotEmpty;
                 }).toList();
 
                 return ListView(
@@ -396,38 +554,48 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
                         'Completed Habits',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                     ),
-                    ...completedHabits.map((habit) => ListTile(
-                      leading: Icon(Icons.check, color: Colors.green),
-                      title: Text(habit.title),
-                      subtitle: Text(habit.description),
-                    )).toList(),
+                    ...completedHabits
+                        .map((habit) => ListTile(
+                              leading: Icon(Icons.check, color: Colors.green),
+                              title: Text(habit.title),
+                              subtitle: Text(habit.description),
+                            ))
+                        .toList(),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
                         'Planned Habits',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                     ),
-                    ...plannedHabits.map((habit) => ListTile(
-                      leading: Icon(Icons.access_time, color: Colors.orange),
-                      title: Text(habit.title),
-                      subtitle: Text(habit.description),
-                    )).toList(),
+                    ...plannedHabits
+                        .map((habit) => ListTile(
+                              leading:
+                                  Icon(Icons.access_time, color: Colors.orange),
+                              title: Text(habit.title),
+                              subtitle: Text(habit.description),
+                            ))
+                        .toList(),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
                         'Skipped Habits',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                     ),
-                    ...skippedHabits.map((habit) => ListTile(
-                      leading: Icon(Icons.cancel, color: Colors.red),
-                      title: Text(habit.title),
-                      subtitle: Text(habit.description),
-                    )).toList(),
+                    ...skippedHabits
+                        .map((habit) => ListTile(
+                              leading: Icon(Icons.cancel, color: Colors.red),
+                              title: Text(habit.title),
+                              subtitle: Text(habit.description),
+                            ))
+                        .toList(),
                   ],
                 );
               },
