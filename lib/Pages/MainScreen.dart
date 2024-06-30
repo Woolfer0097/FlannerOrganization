@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart' hide ChangeNotifierProvider, Consumer;
 import 'Theme/Theme.dart';
+
 import 'ButtonsComponent.dart' as Buttons;
 
 import 'AddHabitScreen.dart';
@@ -11,6 +12,8 @@ import 'CalendarScreen.dart';
 import 'HabbitsScreen.dart';
 import 'SportsScreen.dart';
 import 'AddNoteScreen.dart';
+import 'package:flanner/Notifications/FlutterFirebaseNotificationHandler.dart';
+
 
 class BottomNavIndexNotifier extends StateNotifier<int> {
   BottomNavIndexNotifier() : super(2); // Default index is 2 (Home)
@@ -72,6 +75,10 @@ class MainScreen extends ConsumerWidget {
           ElevatedButton(
             onPressed: () => ref.read(themeNotifierProvider.notifier).changeTheme(),
             child: Icon(Icons.dark_mode),
+          ),
+          ElevatedButton(
+            onPressed: () => (),
+            child: Icon(Icons.message),
           ),
         ],
       ),
