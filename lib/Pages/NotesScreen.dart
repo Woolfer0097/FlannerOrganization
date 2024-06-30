@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'Theme/Theme.dart';
 import 'AddNoteScreen.dart';
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Note {
   final String title;
@@ -13,6 +15,22 @@ class Note {
     required this.content,
     required this.tasks,
   });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'title': title,
+      'content': content,
+      'tasks': tasks.map((task) => task.toMap()).toList(),
+    };
+  }
+
+  factory Note.fromMap(Map<String, dynamic> map) {
+    return Note(
+      title: map['title'],
+      content: map['content'],
+      tasks: List<Task>.from(map['tasks']?.map((x) => Task.fromMap(x))),
+    );
+  }
 }
 
 class Task {
@@ -23,13 +41,43 @@ class Task {
     required this.title,
     required this.color,
   });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'title': title,
+      'color': color.value,
+    };
+  }
+
+  factory Task.fromMap(Map<String, dynamic> map) {
+    return Task(
+      title: map['title'],
+      color: Color(map['color']),
+    );
+  }
 }
 
 class NotesNotifier extends StateNotifier<List<Note>> {
   NotesNotifier() : super([]);
 
+  Future<void> loadNotes() async {
+    final prefs = await SharedPreferences.getInstance();
+    final notesString = prefs.getString('notes');
+    if (notesString != null) {
+      final List<dynamic> notesList = json.decode(notesString);
+      state = notesList.map((noteMap) => Note.fromMap(noteMap)).toList();
+    }
+  }
+
+  Future<void> saveNotes() async {
+    final prefs = await SharedPreferences.getInstance();
+    final notesString = json.encode(state.map((note) => note.toMap()).toList());
+    await prefs.setString('notes', notesString);
+  }
+
   void add(Note note) {
-    state = [...state, note];
+    state = [note, ...state];
+    saveNotes();
   }
 
   void edit(int index, String title, String content, List<Task> tasks) {
@@ -44,6 +92,7 @@ class NotesNotifier extends StateNotifier<List<Note>> {
         else
           state[i],
     ];
+    saveNotes();
   }
 
   void remove(int index) {
@@ -51,13 +100,13 @@ class NotesNotifier extends StateNotifier<List<Note>> {
       for (int i = 0; i < state.length; i++)
         if (i != index) state[i],
     ];
+    saveNotes();
   }
 }
 
 final notesProvider = StateNotifierProvider<NotesNotifier, List<Note>>((ref) {
-  return NotesNotifier();
+  return NotesNotifier()..loadNotes();
 });
-
 
 class NotesScreen extends ConsumerWidget {
   @override
@@ -69,6 +118,7 @@ class NotesScreen extends ConsumerWidget {
     );
 
     return Scaffold(
+      backgroundColor: theme.primaryColor,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -92,9 +142,10 @@ class NotesScreen extends ConsumerWidget {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15.0),
                         ),
-                        color: theme.scaffoldBackgroundColor,
+                        color: theme.cardColor,
                         child: ListTile(
                           title: Text(
+                            maxLines: 1,
                             note.title,
                             style: textStyle,
                           ),
