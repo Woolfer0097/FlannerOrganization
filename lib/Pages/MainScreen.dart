@@ -142,9 +142,9 @@ class MainScreen extends ConsumerWidget {
           appBar: appBars[currentIndex], // Display the selected AppBar
           body: screens[currentIndex], // Display the selected screen
           bottomNavigationBar: BottomNavigationBar(
-            backgroundColor: theme.scaffoldBackgroundColor,
-            selectedItemColor: Colors.purple,
-            unselectedItemColor: Colors.black45,
+            backgroundColor: theme.bottomNavigationBarTheme.backgroundColor,
+            selectedItemColor: theme.bottomNavigationBarTheme.selectedItemColor,
+            unselectedItemColor: theme.bottomNavigationBarTheme.unselectedItemColor,
             currentIndex: currentIndex,
             onTap: (index) => ref.read(bottomNavIndexProvider.notifier).setIndex(index),
             items: [
