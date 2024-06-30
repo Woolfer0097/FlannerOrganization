@@ -22,10 +22,6 @@ final bottomNavIndexProvider = StateNotifierProvider<BottomNavIndexNotifier, int
   return BottomNavIndexNotifier();
 });
 
-// void main() {
-//   runApp(ProviderScope(child: MainScreen()));
-// }
-
 class MainScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -50,10 +46,22 @@ class MainScreen extends ConsumerWidget {
       AppBar(
         title: Text('Notes', style: textStyle),
         backgroundColor: theme.scaffoldBackgroundColor,
+        actions: [
+          ElevatedButton(
+            onPressed: () => ref.read(themeNotifierProvider.notifier).changeTheme(),
+            child: Icon(Icons.dark_mode),
+          ),
+        ],
       ),
       AppBar(
         title: Text('Calendar', style: textStyle),
         backgroundColor: theme.scaffoldBackgroundColor,
+        actions: [
+          ElevatedButton(
+            onPressed: () => ref.read(themeNotifierProvider.notifier).changeTheme(),
+            child: Icon(Icons.dark_mode),
+          ),
+        ],
       ),
       AppBar(
         title: Text('Flanner', style: textStyle),
@@ -91,6 +99,12 @@ class MainScreen extends ConsumerWidget {
       AppBar(
         title: Text('Calories Burned Calculator', style: textStyle),
         backgroundColor: theme.scaffoldBackgroundColor,
+        actions: [
+          ElevatedButton(
+            onPressed: () => ref.read(themeNotifierProvider.notifier).changeTheme(),
+            child: Icon(Icons.dark_mode),
+          ),
+        ],
       ),
     ];
 
@@ -149,41 +163,14 @@ class HomeScreen extends StatelessWidget {
           // Time of Day Buttons
           Padding(
             padding: const EdgeInsets.all(8.0),
-            // child: Row(
-            //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            //   children: [
-            //     buttons.buildTimeButton('All'),
-            //     buttons.buildTimeButton('Morning'),
-            //     buttons.buildTimeButton('Afternoon'),
-            //     buttons.buildTimeButton('Evening'),
-            //   ],
-            // ),
-            child: Container(
-              
-              child: NavigationBar(
-                onDestinationSelected: (int index) {},
-                backgroundColor: theme.scaffoldBackgroundColor,
-                labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
-                selectedIndex: 0,
-                destinations: [
-                  NavigationDestination(
-                    icon: Icon(Icons.alarm),
-                    label: 'All',
-                  ),
-                  NavigationDestination(
-                    icon: Icon(Icons.alarm),
-                    label: 'Morning',
-                  ),
-                  NavigationDestination(
-                    icon: Icon(Icons.alarm),
-                    label: 'Afternoon',
-                  ),
-                  NavigationDestination(
-                    icon: Icon(Icons.alarm),
-                    label: 'Evening',
-                  ),
-                ],
-              ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                buttons.buildTimeButton('All'),
+                buttons.buildTimeButton('Morning'),
+                buttons.buildTimeButton('Afternoon'),
+                buttons.buildTimeButton('Evening'),
+              ],
             ),
           ),
           // Task List

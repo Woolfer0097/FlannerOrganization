@@ -9,10 +9,7 @@ class ButtonsComponent {
 
   Widget buildMenuButton(String label) {
     return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: themeData.elevatedButtonTheme.style?.backgroundColor?.resolve({}) ?? themeData.primaryColor,
-        textStyle: themeData.elevatedButtonTheme.style?.textStyle?.resolve({}) ?? TextStyle(color: themeData.primaryColor),
-      ),
+      style: themeData.elevatedButtonTheme.style,
       onPressed: () {},
       child: Text(label),
     );
@@ -27,12 +24,8 @@ class ButtonsComponent {
   }
 
   Widget buildTimeButton(String label) {
-    return OutlinedButton(
-      style: OutlinedButton.styleFrom(
-        side: BorderSide(color: themeData.primaryColor),
-        backgroundColor: themeData.scaffoldBackgroundColor,
-        textStyle: TextStyle(color: themeData.primaryColor),
-      ),
+    return ElevatedButton(
+      style: themeData.elevatedButtonTheme.style,
       onPressed: () {},
       child: Text(label),
     );
