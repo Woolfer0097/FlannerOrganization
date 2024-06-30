@@ -1,94 +1,56 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+
+
 // Light Theme
 final ThemeData lightTheme = ThemeData(
-  dialogBackgroundColor: Colors.white,
-  scaffoldBackgroundColor: Colors.white,
-  appBarTheme: const AppBarTheme(
-    titleTextStyle: TextStyle(
-      inherit: true,
-      color: Colors.black,
-    ),
-    backgroundColor: Colors.white,
-    elevation: 0,
-  ),
+  brightness: Brightness.light,
   primaryColor: Colors.white,
-  buttonTheme: const ButtonThemeData(
-    buttonColor: Color(0xE2B8FF),
-    disabledColor: Colors.white,
-    textTheme: ButtonTextTheme.primary,
+  canvasColor: Colors.white,
+  scaffoldBackgroundColor: Colors.white,
+  appBarTheme: AppBarTheme(
+    backgroundColor: Colors.white,
+    iconTheme: IconThemeData(color: Colors.black),
+    titleTextStyle: TextStyle(color: Colors.black, fontSize: 20),
   ),
-  elevatedButtonTheme: ElevatedButtonThemeData(
-    style: ButtonStyle(
-      backgroundColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
-        if (states.contains(MaterialState.pressed)) {
-          return Color(0xE2B8FF); // Color when tapped
-        }
-        return Colors.white; // Default color
-      }),
-      textStyle: MaterialStateProperty.resolveWith<TextStyle>((Set<MaterialState> states) {
-        if (states.contains(MaterialState.pressed)) {
-          return TextStyle(
-            inherit: true,
-            color: Colors.white,
-          ); // Color when tapped
-        }
-        return TextStyle(
-          inherit: true,
-          color: Colors.black,
-        ); // Default color
-      }),
-    ),
+  bottomNavigationBarTheme: BottomNavigationBarThemeData(
+    backgroundColor: Colors.white,
+    selectedItemColor: Colors.blue,
+    unselectedItemColor: Colors.grey,
   ),
-  iconTheme: const IconThemeData(
-    color: Color(0xE2B8FF),
+  textTheme: TextTheme(
+    bodyLarge: TextStyle(color: Colors.black),
+    bodyMedium: TextStyle(color: Colors.black),
+    titleLarge: TextStyle(color: Colors.black),
   ),
+  cardColor: Colors.white,
+  iconTheme: IconThemeData(color: Colors.black),
 );
 
 // Dark Theme
 final ThemeData darkTheme = ThemeData(
-  dialogBackgroundColor: Colors.black,
-  scaffoldBackgroundColor: Colors.black,
-  appBarTheme: const AppBarTheme(
-    titleTextStyle: TextStyle(
-      inherit: true,
-      color: Colors.white,
-    ),
-    backgroundColor: Colors.black,
-    elevation: 0,
-  ),
+  brightness: Brightness.dark,
   primaryColor: Colors.black,
-  buttonTheme: const ButtonThemeData(
-    buttonColor: Color(0xE2B8FF),
-    disabledColor: Colors.black,
-    textTheme: ButtonTextTheme.primary,
+  canvasColor: Colors.black,
+  scaffoldBackgroundColor: Colors.black,
+  appBarTheme: AppBarTheme(
+    backgroundColor: Colors.black,
+    iconTheme: IconThemeData(color: Colors.white),
+    titleTextStyle: TextStyle(color: Colors.white, fontSize: 20),
   ),
-  elevatedButtonTheme: ElevatedButtonThemeData(
-    style: ButtonStyle(
-      backgroundColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
-        if (states.contains(MaterialState.pressed)) {
-          return Color(0xE2B8FF); // Color when tapped
-        }
-        return Colors.black; // Default color
-      }),
-      textStyle: MaterialStateProperty.resolveWith<TextStyle>((Set<MaterialState> states) {
-        if (states.contains(MaterialState.pressed)) {
-          return TextStyle(
-            inherit: true,
-            color: Colors.black,
-          ); // Color when tapped
-        }
-        return TextStyle(
-          inherit: true,
-          color: Colors.white,
-        ); // Default color
-      }),
-    ),
+  bottomNavigationBarTheme: BottomNavigationBarThemeData(
+    backgroundColor: Colors.black,
+    selectedItemColor: Colors.purple,
+    unselectedItemColor: Colors.grey,
   ),
-  iconTheme: const IconThemeData(
-    color: Color(0xE2B8FF),
+  textTheme: TextTheme(
+    bodyLarge: TextStyle(color: Colors.white),
+    bodyMedium: TextStyle(color: Colors.white),
+    titleLarge: TextStyle(color: Colors.white),
   ),
+  cardColor: Colors.grey[900],
+  iconTheme: IconThemeData(color: Colors.white),
 );
 
 // Theme Notifier
