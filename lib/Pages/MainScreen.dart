@@ -174,14 +174,29 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       body: Consumer<HabitProvider>(
         builder: (context, habitProvider, child) {
-          return ListView.builder(
-            itemCount: habitProvider.habits.length,
-            itemBuilder: (context, index) {
-              Habit habit = habitProvider.habits[index];
-              return HabitCard(habit: habit);
-            },
+          return Column(
+
+            children: [
+              // Graphic(),
+
+              SizedBox(
+                child: ListView(
+                  shrinkWrap: true,
+                  children: List.generate(
+                    habitProvider.habits.length,
+                    (index){
+                      Habit habit = habitProvider.habits[index];
+                      return HabitCard(habit: habit);
+                    }
+                  ),
+                ),
+              ),
+              // SizedBox(height: 20),
+              Spacer(),
+              buttons.buildNoteButton('Add note', context),
+            ],
           );
-        },
+        }
       ),
     );
   }
