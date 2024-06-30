@@ -1,11 +1,13 @@
+import 'package:flanner/Pages/AchievementsPage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart' hide ChangeNotifierProvider;
+import 'package:flutter_riverpod/flutter_riverpod.dart' hide ChangeNotifierProvider, Consumer;
 import 'Theme/Theme.dart';
 import 'ButtonsComponent.dart' as Buttons;
 
+import 'AddHabitScreen.dart';
 import 'NotesScreen.dart';
-// import 'CalendarScreen.dart';
+import 'CalendarScreen.dart';
 import 'HabbitsScreen.dart';
 import 'SportsScreen.dart';
 import 'AddNoteScreen.dart';
@@ -21,10 +23,6 @@ class BottomNavIndexNotifier extends StateNotifier<int> {
 final bottomNavIndexProvider = StateNotifierProvider<BottomNavIndexNotifier, int>((ref) {
   return BottomNavIndexNotifier();
 });
-
-// void main() {
-//   runApp(ProviderScope(child: MainScreen()));
-// }
 
 class MainScreen extends ConsumerWidget {
   @override
@@ -73,14 +71,38 @@ class MainScreen extends ConsumerWidget {
         ),
         backgroundColor: theme.scaffoldBackgroundColor,
         actions: [
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => AddHabitScreen()),
-              );
-            },
+          Builder( // Ensure the correct context for navigation
+            builder: (context) => IconButton(
+              icon: Icon(Icons.calendar_today),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CalendarScreen()),
+                );
+              },
+            ),
+          ),
+          Builder( // Ensure the correct context for navigation
+            builder: (context) => IconButton(
+              icon: Icon(Icons.add),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AddHabitScreen()),
+                );
+              },
+            ),
+          ),
+          Builder( // Ensure the correct context for navigation
+            builder: (context) => IconButton(
+              icon: Icon(Icons.star),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AchievementsScreen()),
+                );
+              },
+            ),
           ),
           ElevatedButton(
             onPressed: () => ref.read(themeNotifierProvider.notifier).changeTheme(),
@@ -93,7 +115,6 @@ class MainScreen extends ConsumerWidget {
         backgroundColor: theme.scaffoldBackgroundColor,
       ),
     ];
-
 
     return ChangeNotifierProvider(
       create: (context) => HabitProvider(),
@@ -131,70 +152,17 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: theme.primaryColor,
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                buttons.buildTabButton('Daily'),
-                buttons.buildTabButton('Weekly'),
-                buttons.buildTabButton('Overall'),
-              ],
-            ),
-          ),
-          // Time of Day Buttons
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            // child: Row(
-            //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            //   children: [
-            //     buttons.buildTimeButton('All'),
-            //     buttons.buildTimeButton('Morning'),
-            //     buttons.buildTimeButton('Afternoon'),
-            //     buttons.buildTimeButton('Evening'),
-            //   ],
-            // ),
-            child: Container(
-              
-              child: NavigationBar(
-                onDestinationSelected: (int index) {},
-                backgroundColor: theme.scaffoldBackgroundColor,
-                labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
-                selectedIndex: 0,
-                destinations: [
-                  NavigationDestination(
-                    icon: Icon(Icons.alarm),
-                    label: 'All',
-                  ),
-                  NavigationDestination(
-                    icon: Icon(Icons.alarm),
-                    label: 'Morning',
-                  ),
-                  NavigationDestination(
-                    icon: Icon(Icons.alarm),
-                    label: 'Afternoon',
-                  ),
-                  NavigationDestination(
-                    icon: Icon(Icons.alarm),
-                    label: 'Evening',
-                  ),
-                ],
-              ),
-            ),
-          ),
-          // Task List
-          Expanded(
-            child: ListView(
-              children: [
-                buttons.buildTaskCard('Task 1'),
-              ],
-            ),
-          ),
-        ],
+    return Scaffold(
+      body: Consumer<HabitProvider>(
+        builder: (context, habitProvider, child) {
+          return ListView.builder(
+            itemCount: habitProvider.habits.length,
+            itemBuilder: (context, index) {
+              Habit habit = habitProvider.habits[index];
+              return HabitCard(habit: habit);
+            },
+          );
+        },
       ),
     );
   }

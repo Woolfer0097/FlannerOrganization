@@ -5,12 +5,15 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-import 'package:flanner/main_habit.dart';
+import 'package:flanner/Pages/AddHabitScreen.dart';
+import 'package:flanner/Pages/CalendarScreen.dart';
+import 'package:flanner/Pages/HabbitsScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:flanner/main.dart';
 import 'package:provider/provider.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 void main() {
   group('HabitTrackerScreen Tests', () {
@@ -98,7 +101,7 @@ void main() {
         description: 'Drink 8 glasses of water',
         endDate: DateTime.now().add(Duration(days: 7)),
         dates: {},
-        skippedDates: {},
+        startDate: DateTime.now(),
       );
 
       await tester.pumpWidget(
@@ -145,8 +148,7 @@ void main() {
         title: 'Meditate',
         description: 'Meditate for 10 minutes',
         endDate: now.add(Duration(days: 10)),
-        dates: {DateUtils.dateOnly(now): true},
-        skippedDates: {},
+        dates: {DateUtils.dateOnly(now): true}, startDate: DateTime.now(),
       );
 
       await tester.pumpWidget(
