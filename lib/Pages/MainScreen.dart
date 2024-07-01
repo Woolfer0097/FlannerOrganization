@@ -1,5 +1,3 @@
-import 'dart:js_interop';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart'
     hide ChangeNotifierProvider, Consumer;
@@ -193,9 +191,7 @@ class MainScreen extends ConsumerWidget {
         home: Scaffold(
           appBar: appBars[currentIndex], // Display the selected AppBar
           body: screens[currentIndex], // Display the selected screen
-          bottomNavigationBar: Localizations.override(
-            context: context, locale: locale,
-          child:BottomNavigationBar(
+          bottomNavigationBar: BottomNavigationBar(
             backgroundColor: theme.bottomNavigationBarTheme.backgroundColor,
             selectedItemColor: theme.bottomNavigationBarTheme.selectedItemColor,
             unselectedItemColor: theme.bottomNavigationBarTheme.unselectedItemColor,
@@ -214,7 +210,6 @@ class MainScreen extends ConsumerWidget {
               BottomNavigationBarItem(icon: Icon(Icons.local_dining), label: AppLocalizations.of(context)!.calories),
             ],
           ),
-        ),
         ),
       ),
     );
