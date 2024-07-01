@@ -1,4 +1,20 @@
 {
     "@@locale": "en",
-    "name": "Flanner"
+    "name": "Flanner",
+    "notes": "Notes",
+    "calendar": "Calendar",
+    "habit_tracker": "Habit Tracker",
+    "calories_burned_calculator": "Calories Burned Calculator",
+    "home": "Home",
+    "tasks": "Tasks",
+    "sport": "Sport",
+    "settings": "Settings",
+    "dark_mode": "Dark Mode",
+    "light_mode": "Light Mode",
+    "add_habit": "Add Habit",
+    "add_task": "Add Task",
+    "add_note": "Add Note",
+    "edit_note": "Edit Note",
+    "edit_habit": "Edit Habit",
+    "edit_task": "Edit Task"
 }

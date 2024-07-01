@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart'
     hide ChangeNotifierProvider, Consumer;
+
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'Theme/Theme.dart';
 import 'ButtonsComponent.dart' as Buttons;
 
@@ -48,7 +52,7 @@ class MainScreen extends ConsumerWidget {
     ];
     final List<AppBar> appBars = [
       AppBar(
-        title: Text('Notes', style: textStyle),
+        title: Text(AppLocalizations.of(context)!.notes, style: textStyle),
         backgroundColor: theme.scaffoldBackgroundColor,
         actions: [
           ElevatedButton(
@@ -59,7 +63,7 @@ class MainScreen extends ConsumerWidget {
         ],
       ),
       AppBar(
-        title: Text('Calendar', style: textStyle),
+        title: Text(AppLocalizations.of(context)!.calendar, style: textStyle),
         backgroundColor: theme.scaffoldBackgroundColor,
         actions: [
           ElevatedButton(
@@ -70,7 +74,7 @@ class MainScreen extends ConsumerWidget {
         ],
       ),
       AppBar(
-        title: Text('Flanner', style: textStyle),
+        title: Text(AppLocalizations.of(context)!.name, style: textStyle),
         backgroundColor: theme.scaffoldBackgroundColor,
         actions: [
           ElevatedButton(
@@ -82,7 +86,7 @@ class MainScreen extends ConsumerWidget {
       ),
       AppBar(
         title: Text(
-          'Habit Tracker',
+          AppLocalizations.of(context)!.habit_tracker,
           style: textStyle,
           textAlign: TextAlign.center,
         ),
@@ -133,7 +137,7 @@ class MainScreen extends ConsumerWidget {
         ],
       ),
       AppBar(
-        title: Text('Calories Burned Calculator', style: textStyle),
+        title: Text(AppLocalizations.of(context)!.calories_burned_calculator, style: textStyle),
         backgroundColor: theme.scaffoldBackgroundColor,
         actions: [
           ElevatedButton(
@@ -148,6 +152,17 @@ class MainScreen extends ConsumerWidget {
     return ChangeNotifierProvider(
       create: (context) => HabitProvider(),
       child: MaterialApp(
+        locale: Locale('en'),
+        supportedLocales: [
+          Locale('en', ''), // English
+          Locale('ru', ''),
+        ],
+        localizationsDelegates: [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
         debugShowCheckedModeBanner: false,
         theme: theme,
         home: Scaffold(
@@ -162,11 +177,11 @@ class MainScreen extends ConsumerWidget {
             onTap: (index) =>
                 ref.read(bottomNavIndexProvider.notifier).setIndex(index),
             items: [
-              BottomNavigationBarItem(icon: Icon(Icons.notes), label: "Notes"),
+              BottomNavigationBarItem(icon: Icon(Icons.notes), label: AppLocalizations.of(context)!.notes),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.calendar_month), label: "Calendar"),
-              BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-              BottomNavigationBarItem(icon: Icon(Icons.task), label: "Tasks"),
+                  icon: Icon(Icons.calendar_month), label: AppLocalizations.of(context)!.calendar),
+              BottomNavigationBarItem(icon: Icon(Icons.home), label: AppLocalizations.of(context)!.home),
+              BottomNavigationBarItem(icon: Icon(Icons.task), label: AppLocalizations.of(context)!.tasks),
               BottomNavigationBarItem(
                   icon: Icon(Icons.local_fire_department_rounded),
                   label: "Sport"),

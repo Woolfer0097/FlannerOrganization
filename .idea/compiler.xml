@@ -5,6 +5,8 @@
       <module name="android.app" target="19" />
       <module name="android.firebase_core" target="19" />
       <module name="android.firebase_messaging" target="19" />
+      <module name="android.flutter_localization" target="19" />
+      <module name="android.path_provider_android" target="19" />
       <module name="android.shared_preferences_android" target="19" />
       <module name="dev.flutter.plugin.gradle" target="19" />
       <module name="dev.flutter.plugin.gradle.main" target="19" />
