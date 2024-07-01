@@ -218,8 +218,17 @@ class HomeScreen extends ConsumerWidget {
                       },
                       child: Text('Add Habit'),
                     ),
-                    Spacer(),
-                    buttons.buildNoteButton('Add note', context),
+                    SizedBox(height: 30),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AddNoteScreen()),
+                        );
+                      },
+                      child: Text('Add Note'),
+                    ),
                   ],
                 ),
               )

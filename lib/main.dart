@@ -1,61 +1,113 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'Pages/MainScreen.dart';
+import 'dart:ui' as ui;
+import 'dart:typed_data';
+import 'dart:async';
+import 'package:flutter/services.dart';
 
-void main() async {
-  runApp(ProviderScope(child: MainScreen()));
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flanner/Pages/MainScreen.dart';
+
+void main() {
+  runApp(ProviderScope(child: MyApp()));
 }
 
-//
-// Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-//   await Firebase.initializeApp();
-//   print("Handling a background message: ${message.messageId}");
-// }
-//
-// class MyApp extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       home: Scaffold(
-//         appBar: AppBar(title: Text('FCM Example')),
-//         body: MessagingWidget(),
-//       ),
-//     );
-//   }
-// }
-//
-// class MessagingWidget extends StatefulWidget {
-//   @override
-//   _MessagingWidgetState createState() => _MessagingWidgetState();
-// }
-//
-// class _MessagingWidgetState extends State<MessagingWidget> {
-//   @override
-//   void initState() {
-//     super.initState();
-//     FirebaseMessaging.instance.getToken().then((token) {
-//       print("FCM Token: $token");
-//     });
-//
-//     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-//       print('Got a message whilst in the foreground!');
-//       print('Message data: ${message.data}');
-//
-//       if (message.notification != null) {
-//         print('Message also contained a notification: ${message.notification}');
-//       }
-//     });
-//
-//     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-//       print('A new onMessageOpenedApp event was published!');
-//       print('Message data: ${message.data}');
-//     });
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Center(
-//       child: Text('Listening for FCM messages...'),
-//     );
-//   }
-// }
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ProviderScope(
+      child: MaterialApp(
+        home: Scaffold(
+          body: AnimatedImages(),
+        ),
+        routes: {
+          '/mainScreen': (context) => MainScreen(),
+        },
+      ),
+    );
+  }
+}
+
+class AnimatedImages extends StatefulWidget {
+  @override
+  _AnimatedImagesState createState() => _AnimatedImagesState();
+}
+
+class _AnimatedImagesState extends State<AnimatedImages>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  ui.Image? _image1;
+  ui.Image? _image2;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: Duration(seconds: 2),
+      vsync: this,
+    )..addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        Navigator.of(context).pushReplacementNamed('/mainScreen');
+      }
+    });
+    _loadImages();
+    _controller.forward();
+  }
+
+  Future<void> _loadImages() async {
+    _image1 = await _loadImage('/Hand.png');
+    _image2 = await _loadImage('/Note.png');
+    setState(() {});
+  }
+
+  Future<ui.Image> _loadImage(String asset) async {
+    final ByteData data = await rootBundle.load(asset);
+    final Completer<ui.Image> completer = Completer();
+    ui.decodeImageFromList(Uint8List.view(data.buffer), (ui.Image img) {
+      completer.complete(img);
+    });
+    return completer.future;
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      foregroundPainter: MyPainter(_controller, _image1, _image2),
+      child: Container(),
+    );
+  }
+}
+
+class MyPainter extends CustomPainter {
+  final AnimationController controller;
+  final ui.Image? image1;
+  final ui.Image? image2;
+
+  MyPainter(this.controller, this.image1, this.image2) : super(repaint: controller);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    if (image1 != null && image2 != null) {
+      double centerX = size.width / 2;
+      double centerY = size.height / 2;
+
+      // Draw the first image (note) moving from left border to the center
+      double notePosition = controller.value * centerX;
+      canvas.drawImage(image2!, Offset(notePosition - image2!.width / 2, centerY - image2!.height / 2), Paint());
+
+      // Draw the second image (hand) moving from right border to the center
+      double handPosition = size.width - (controller.value * centerX);
+      canvas.drawImage(image1!, Offset(handPosition - image1!.width / 2 + 150, centerY - image1!.height / 2), Paint());
+    }
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return true;
+  }
+}

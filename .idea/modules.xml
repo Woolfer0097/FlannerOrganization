@@ -5,21 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/Flanner.iml" filepath="$PROJECT_DIR$/.idea/Flanner.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/android.iml" filepath="$PROJECT_DIR$/.idea/modules/android.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/android.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/android.app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/android.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/android.app.androidTest.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/android.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/android.app.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/android.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/android.app.unitTest.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1593992433/android.firebase_core.iml" filepath="$PROJECT_DIR$/.idea/modules/1593992433/android.firebase_core.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1593992433/android.firebase_core.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/1593992433/android.firebase_core.androidTest.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1593992433/android.firebase_core.main.iml" filepath="$PROJECT_DIR$/.idea/modules/1593992433/android.firebase_core.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1593992433/android.firebase_core.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/1593992433/android.firebase_core.unitTest.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-679830733/android.firebase_messaging.iml" filepath="$PROJECT_DIR$/.idea/modules/-679830733/android.firebase_messaging.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-679830733/android.firebase_messaging.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/-679830733/android.firebase_messaging.androidTest.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-679830733/android.firebase_messaging.main.iml" filepath="$PROJECT_DIR$/.idea/modules/-679830733/android.firebase_messaging.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-679830733/android.firebase_messaging.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/-679830733/android.firebase_messaging.unitTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1006585194/android.shared_preferences_android.iml" filepath="$PROJECT_DIR$/.idea/modules/-1006585194/android.shared_preferences_android.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1006585194/android.shared_preferences_android.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/-1006585194/android.shared_preferences_android.androidTest.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1006585194/android.shared_preferences_android.main.iml" filepath="$PROJECT_DIR$/.idea/modules/-1006585194/android.shared_preferences_android.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1006585194/android.shared_preferences_android.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/-1006585194/android.shared_preferences_android.unitTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/android/flanner_android.iml" filepath="$PROJECT_DIR$/android/flanner_android.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/-649514917/gradle.iml" filepath="$PROJECT_DIR$/.idea/modules/-649514917/gradle.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/-649514917/gradle.main.iml" filepath="$PROJECT_DIR$/.idea/modules/-649514917/gradle.main.iml" />

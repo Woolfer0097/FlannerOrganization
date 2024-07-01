@@ -51,7 +51,7 @@ class _UserGuidePageState extends State<UserGuidePage> {
                   children: [
                     if (index > 0)
                       Expanded(
-                        child: FlatButton(
+                        child: TextButton(
                           onPressed: () {
                             _pageController.previousPage(
                               duration: Duration(milliseconds: 300),
@@ -65,7 +65,7 @@ class _UserGuidePageState extends State<UserGuidePage> {
                       ),
                     if (index > 0) SizedBox(width: 10),
                     Expanded(
-                      child: FlatButton(
+                      child: TextButton(
                         onPressed: () {
                           if (index < _guideContent.length - 1) {
                             _pageController.nextPage(
