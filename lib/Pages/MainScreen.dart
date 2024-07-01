@@ -1,8 +1,7 @@
-import 'package:flanner/Pages/AchievementsPage.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart'
     hide ChangeNotifierProvider, Consumer;
+import 'package:provider/provider.dart';
 
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -11,6 +10,8 @@ import 'Theme/Theme.dart';
 import 'ButtonsComponent.dart' as Buttons;
 
 import 'AddHabitScreen.dart';
+import 'AchievementsPage.dart';
+
 import 'NotesScreen.dart';
 import 'CalendarScreen.dart';
 import 'HabbitsScreen.dart';
@@ -26,29 +27,39 @@ class BottomNavIndexNotifier extends StateNotifier<int> {
   }
 }
 
-final bottomNavIndexProvider = StateNotifierProvider<BottomNavIndexNotifier,
-    int>((ref) {
+final bottomNavIndexProvider = StateNotifierProvider<BottomNavIndexNotifier, int>((ref) {
   return BottomNavIndexNotifier();
+});
+
+class LocaleNotifier extends StateNotifier<Locale> {
+  LocaleNotifier() : super(Locale('en'));
+
+  void setLocale(Locale locale) {
+    state = locale;
+  }
+}
+
+final localeProvider = StateNotifierProvider<LocaleNotifier, Locale>((ref) {
+  return LocaleNotifier();
 });
 
 class MainScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.watch(themeNotifierProvider);
-    final buttonTheme = ref.watch(buttonStateProvider);
     final currentIndex = ref.watch(bottomNavIndexProvider);
+    final locale = ref.watch(localeProvider);
     final Buttons.ButtonsComponent buttons = Buttons.ButtonsComponent(theme);
 
     final textStyle = TextStyle(
       color: theme.appBarTheme.titleTextStyle?.color,
     );
 
-
     final List<Widget> screens = [
       NotesScreen(),
       CalendarScreen(),
       HomeScreen(theme: theme, textStyle: textStyle),
-      HabitTrackerScreen(buttons: buttons, theme: theme, textStyle: textStyle),
+      HabitTrackerScreen(),
       SportScreen(),
       CalorieGainScreen(),
     ];
@@ -58,10 +69,10 @@ class MainScreen extends ConsumerWidget {
         backgroundColor: theme.scaffoldBackgroundColor,
         actions: [
           ElevatedButton(
-            onPressed: () =>
-                ref.read(themeNotifierProvider.notifier).changeTheme(),
+            onPressed: () => ref.read(themeNotifierProvider.notifier).changeTheme(),
             child: Icon(Icons.dark_mode),
           ),
+          _buildLanguageSwitcher(ref, context),
         ],
       ),
       AppBar(
@@ -69,10 +80,10 @@ class MainScreen extends ConsumerWidget {
         backgroundColor: theme.scaffoldBackgroundColor,
         actions: [
           ElevatedButton(
-            onPressed: () =>
-                ref.read(themeNotifierProvider.notifier).changeTheme(),
+            onPressed: () => ref.read(themeNotifierProvider.notifier).changeTheme(),
             child: Icon(Icons.dark_mode),
           ),
+          _buildLanguageSwitcher(ref, context),
         ],
       ),
       AppBar(
@@ -80,10 +91,10 @@ class MainScreen extends ConsumerWidget {
         backgroundColor: theme.scaffoldBackgroundColor,
         actions: [
           ElevatedButton(
-            onPressed: () =>
-                ref.read(themeNotifierProvider.notifier).changeTheme(),
+            onPressed: () => ref.read(themeNotifierProvider.notifier).changeTheme(),
             child: Icon(Icons.dark_mode),
           ),
+          _buildLanguageSwitcher(ref, context),
         ],
       ),
       AppBar(
@@ -125,17 +136,16 @@ class MainScreen extends ConsumerWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => AchievementsScreen()),
+                      MaterialPageRoute(builder: (context) => AchievementsScreen()),
                     );
                   },
                 ),
           ),
           ElevatedButton(
-            onPressed: () =>
-                ref.read(themeNotifierProvider.notifier).changeTheme(),
+            onPressed: () => ref.read(themeNotifierProvider.notifier).changeTheme(),
             child: Icon(Icons.dark_mode),
           ),
+          _buildLanguageSwitcher(ref, context),
         ],
       ),
       AppBar(
@@ -143,10 +153,10 @@ class MainScreen extends ConsumerWidget {
         backgroundColor: theme.scaffoldBackgroundColor,
         actions: [
           ElevatedButton(
-            onPressed: () =>
-                ref.read(themeNotifierProvider.notifier).changeTheme(),
+            onPressed: () => ref.read(themeNotifierProvider.notifier).changeTheme(),
             child: Icon(Icons.dark_mode),
           ),
+          _buildLanguageSwitcher(ref, context),
         ],
       ),
       AppBar(
@@ -154,10 +164,10 @@ class MainScreen extends ConsumerWidget {
         backgroundColor: theme.scaffoldBackgroundColor,
         actions: [
           ElevatedButton(
-            onPressed: () =>
-                ref.read(themeNotifierProvider.notifier).changeTheme(),
+            onPressed: () => ref.read(themeNotifierProvider.notifier).changeTheme(),
             child: Icon(Icons.dark_mode),
           ),
+          _buildLanguageSwitcher(ref, context),
         ],
       ),
     ];
@@ -165,10 +175,10 @@ class MainScreen extends ConsumerWidget {
     return ChangeNotifierProvider(
       create: (context) => HabitProvider(),
       child: MaterialApp(
-        locale: Locale('en'),
+        locale: locale,
         supportedLocales: [
           Locale('en', 'US'), // English
-          Locale('ru', ''),
+          Locale('ru', ''),   // Russian
         ],
         localizationsDelegates: [
           AppLocalizations.delegate,
@@ -184,11 +194,9 @@ class MainScreen extends ConsumerWidget {
           bottomNavigationBar: BottomNavigationBar(
             backgroundColor: theme.bottomNavigationBarTheme.backgroundColor,
             selectedItemColor: theme.bottomNavigationBarTheme.selectedItemColor,
-            unselectedItemColor: theme.bottomNavigationBarTheme
-                .unselectedItemColor,
+            unselectedItemColor: theme.bottomNavigationBarTheme.unselectedItemColor,
             currentIndex: currentIndex,
-            onTap: (index) =>
-                ref.read(bottomNavIndexProvider.notifier).setIndex(index),
+            onTap: (index) => ref.read(bottomNavIndexProvider.notifier).setIndex(index),
             items: [
               BottomNavigationBarItem(icon: Icon(Icons.notes), label: AppLocalizations.of(context)!.notes),
               BottomNavigationBarItem(
@@ -199,11 +207,32 @@ class MainScreen extends ConsumerWidget {
                   icon: Icon(Icons.local_fire_department_rounded),
                   label: AppLocalizations.of(context)!.sport
               ),
-              BottomNavigationBarItem(icon: Icon(Icons.local_dining), label: "Calories"),
+              BottomNavigationBarItem(icon: Icon(Icons.local_dining), label: AppLocalizations.of(context)!.calories),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildLanguageSwitcher(WidgetRef ref, BuildContext context) {
+    final currentLocale = ref.watch(localeProvider);
+
+    return PopupMenuButton<Locale>(
+      onSelected: (Locale locale) {
+        ref.read(localeProvider.notifier).setLocale(locale);
+      },
+      icon: Icon(Icons.language),
+      itemBuilder: (BuildContext context) => <PopupMenuEntry<Locale>>[
+        PopupMenuItem<Locale>(
+          value: Locale('en'),
+          child: Text('English'),
+        ),
+        PopupMenuItem<Locale>(
+          value: Locale('ru'),
+          child: Text('Русский'),
+        ),
+      ],
     );
   }
 }
@@ -302,4 +331,3 @@ class HomeScreen extends ConsumerWidget {
     );
   }
 }
-

@@ -230,16 +230,6 @@ class Achievement {
 }
 
 class HabitTrackerScreen extends StatelessWidget {
-  final Buttons.ButtonsComponent buttons; // Assuming ButtonsComponent is a custom class
-  final ThemeData theme;
-  final TextStyle textStyle;
-
-  HabitTrackerScreen({
-    required this.buttons,
-    required this.theme,
-    required this.textStyle,
-  });
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -254,7 +244,7 @@ class HabitTrackerScreen extends StatelessWidget {
                 children: [
                   Text(
                     AppLocalizations.of(context)!.no_habits,
-                    style: textStyle.copyWith(color: Colors.grey),
+                    style: TextStyle(fontSize: 20, color: Colors.grey),
                   ),
                   SizedBox(height: 20),
                   ElevatedButton(

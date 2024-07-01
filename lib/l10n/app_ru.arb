@@ -1,4 +1,87 @@
 {
     "@@locale": "ru",
-    "name": "Фланнер"
+    "name": "Фланнер",
+    "notes": "Заметки",
+    "calendar": "Календарь",
+    "habit_tracker": "Трекер Привычек",
+    "calories_burned_calculator": "Калькулятор Сожженных Калорий",
+    "home": "Главная",
+    "tasks": "Задачи",
+    "sport": "Спорт",
+    "settings": "Настройки",
+    "dark_mode": "Темный Режим",
+    "light_mode": "Светлый Режим",
+    "add_habit": "Добавить Привычку",
+    "add_task": "Добавить Задачу",
+    "add_note": "Добавить Заметку",
+    "edit_note": "Редактировать Заметку",
+    "edit_habit": "Редактировать Привычку",
+    "edit_task": "Редактировать Задачу",
+    "no_habits": "Нет привычек",
+    "no_notes": "Нет заметок",
+    "no_tasks": "Нет задач",
+    "no_notes_habits": "Нет заметок или привычек",
+    "habits": "Привычки",
+    "achievements": "Достижения",
+    "title": "Заголовок",
+    "please_title": "Пожалуйста, введите заголовок",
+    "please_description": "Пожалуйста, введите описание",
+    "end_date": "Дата Окончания",
+    "please_select_an_end_date": "Пожалуйста, выберите дату окончания",
+    "content": "Содержание",
+    "please_content": "Пожалуйста, введите содержание",
+    "selected_tasks": "Выбранные Задачи:",
+    "add": "Добавить",
+    "update": "Обновить",
+    "cancel": "Отмена",
+    "delete": "Удалить",
+    "delete_habit": "Удалить Привычку",
+    "delete_task": "Удалить Задачу",
+    "delete_note": "Удалить Заметку",
+    "save_changes": "Сохранить Изменения",
+    "completed": "{goal_title} Цель Достигнута",
+    "@completed": {
+        "description": "Поздравляем! Вы достигли своей цели: {goal_title}.",
+        "placeholders": {
+            "goal_title": {
+                "type": "String",
+                "defaultValue": "Привычка",
+                "example": "Привычка"
+            }
+        }
+    },
+    "description": "Поздравляем! Вы достигли своей цели: {goal_title}.",
+    "@description": {
+        "description": "Поздравляем! Вы достигли своей цели: {goal_title}.",
+        "placeholders": {
+            "goal_title": {
+                "type": "String",
+                "defaultValue": "Привычка",
+                "example": "Привычка"
+            }
+        }
+    },
+    "description_empty": "Описание",
+    "achievement_title": "Название Достижения",
+    "achievement": "Достижение",
+    "achievement_description": "Описание Достижения",
+    "days_completed": "Завершено Дней",
+    "days_skipped": "Пропущено Дней",
+    "planned_habits": "Запланированные Привычки",
+    "planned_tasks": "Запланированные Задачи",
+    "completed_habits": "Завершенные Привычки",
+    "completed_tasks": "Завершенные Задачи",
+    "skipped_habits": "Пропущенные Привычки",
+    "skipped_tasks": "Пропущенные Задачи",
+    "goals": "Цели",
+    "goal": "Цель",
+    "goal_title": "Название Цели",
+    "goal_description": "Описание Цели",
+    "goal_type": "Тип Цели",
+    "skip": "Пропустить",
+    "edit": "Редактировать",
+    "complete": "Завершить",
+    "select_tasks": "Выбрать Задачи",
+    "calories_gained_calculator": "Калькулятор Полученных Калорий",
+    "calories": "Калории"
 }
