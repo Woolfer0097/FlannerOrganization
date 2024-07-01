@@ -15,7 +15,6 @@
     "calories": "Calories",
     "calories_burned": "Calories Burned",
     "total_calories_burned": "Total Calories Burned",
-    "new_total_calories": "New Total Calories",
     "calculate": "Calculate",
     "select_workout": "Select Workout",
     "select_intensity": "Select Intensity",
@@ -103,9 +102,5 @@
     "complete": "Complete",
     "select_tasks": "Select Tasks",
     "calories_gained_calculator": "Calories Gained Calculator",
-    "calories": "Calories",
-    "select_food": "Select Food",
-    "enter_food": "Enter Food",
-    "enter_calories": "Enter Calories",
-    "add_food": "Add Food"
+    "calories": "Calories"
 }
