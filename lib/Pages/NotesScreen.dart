@@ -5,6 +5,8 @@ import 'AddNoteScreen.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class Note {
   final String title;
   final String content;

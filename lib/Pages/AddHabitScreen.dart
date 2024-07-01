@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'HabbitsScreen.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'Theme/Theme.dart';
 
 
@@ -20,7 +20,7 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Habit'),
+        title: Text(AppLocalizations.of(context)!.add_habit),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -29,10 +29,10 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
           child: Column(
             children: [
               TextFormField(
-                decoration: InputDecoration(labelText: 'Title'),
+                decoration: InputDecoration(labelText: AppLocalizations.of(context)!.title),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a title';
+                    return AppLocalizations.of(context)!.please_title;
                   }
                   return null;
                 },
@@ -41,10 +41,10 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                 },
               ),
               TextFormField(
-                decoration: InputDecoration(labelText: 'Description'),
+                decoration: InputDecoration(labelText: AppLocalizations.of(context)!.description_empty),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a description';
+                    return AppLocalizations.of(context)!.please_description;
                   }
                   return null;
                 },
@@ -54,7 +54,7 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
               ),
               TextFormField(
                 readOnly: true,
-                decoration: InputDecoration(labelText: 'End Date'),
+                decoration: InputDecoration(labelText: AppLocalizations.of(context)!.end_date),
                 onTap: () async {
                   DateTime? pickedDate = await showDatePicker(
                     context: context,
@@ -70,7 +70,7 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                 },
                 validator: (value) {
                   if (_endDate == null) {
-                    return 'Please select an end date';
+                    return AppLocalizations.of(context)!.please_select_an_end_date;
                   }
                   return null;
                 },
@@ -100,7 +100,7 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                     Navigator.pop(context);
                   }
                 },
-                child: Text('Add Habit'),
+                child: Text(AppLocalizations.of(context)!.add_habit),
               ),
             ],
           ),

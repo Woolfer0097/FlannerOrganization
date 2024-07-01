@@ -16,5 +16,70 @@
     "add_note": "Add Note",
     "edit_note": "Edit Note",
     "edit_habit": "Edit Habit",
-    "edit_task": "Edit Task"
+    "edit_task": "Edit Task",
+    "no_habits": "There are no habits",
+    "no_notes": "There are no notes yet",
+    "no_tasks": "There are no tasks",
+    "no_notes_habits": "There are no notes or habits",
+    "habits": "Habits",
+    "achievements": "Achievements",
+    "title": "Title",
+    "please_title": "Please enter a title",
+    "please_description": "Please enter a description",
+    "end_date": "End Date",
+    "please_select_an_end_date": "Please select an end date",
+    "content": "Content",
+    "please_content": "Please enter content",
+    "selected_tasks": "Selected Tasks:",
+    "add": "Add",
+    "update": "Update",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "delete_habit": "Delete Habit",
+    "delete_task": "Delete Task",
+    "delete_note": "Delete Note",
+    "save_changes": "Save Changes",
+    "completed": "{goal_title} Goal Completed",
+    "@completed": {
+        "description": "Congratulations! You have completed your {goal_title} goal.",
+        "placeholders": {
+            "goal_title": {
+                "type": "String",
+                "defaultValue": "Habit",
+                "example": "Habit"
+            }
+        }
+    },
+    "description": "Congratulations! You have completed your {goal_title} goal.",
+    "@description": {
+        "description": "Congratulations! You have completed your {goal_title} goal.",
+        "placeholders": {
+            "goal_title": {
+                "type": "String",
+                "defaultValue": "Habit",
+                "example": "Habit"
+            }
+        }
+    },
+    "description_empty": "Description",
+    "achievement_title": "Achievement Title",
+    "achievement": "Achievement",
+    "achievement_description": "Achievement Description",
+    "days_completed": "Days Completed",
+    "days_skipped": "Days Skipped",
+    "planned_habits": "Planned Habits",
+    "planned_tasks": "Planned Tasks",
+    "completed_habits": "Completed Habits",
+    "completed_tasks": "Completed Tasks",
+    "skipped_habits": "Skipped Habits",
+    "skipped_tasks": "Skipped Tasks",
+    "goals": "Goals",
+    "goal": "Goal",
+    "goal_title": "Goal Title",
+    "goal_description": "Goal Description",
+    "goal_type": "Goal Type",
+    "skip": "Skip",
+    "edit": "Edit",
+    "complete": "Complete",
+    "select_tasks": "Select Tasks"
 }

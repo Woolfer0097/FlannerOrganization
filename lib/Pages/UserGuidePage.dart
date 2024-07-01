@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class UserGuidePage extends StatefulWidget {
   @override
   _UserGuidePageState createState() => _UserGuidePageState();
@@ -10,7 +12,7 @@ class _UserGuidePageState extends State<UserGuidePage> {
   int _currentPage = 0;
 
   final List<Map<String, String>> _guideContent = [
-    {'image': 'assets/image1.png', 'description': 'On the mani page'},
+    {'image': 'assets/image1.png', 'description': 'On the main page'},
     {'image': 'assets/image2.png', 'description': 'Description for Image 2'},
     {'image': 'assets/image3.png', 'description': 'Description for Image 3'},
     // Add more pages as needed

@@ -19,9 +19,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ProviderScope(
       child: MaterialApp(
+        title: 'Flanner',
+        debugShowCheckedModeBanner: false,
         locale: Locale('en'),
         supportedLocales: [
-          Locale('en', ''), // English
+          Locale('en', 'US'), // English
           Locale('ru', ''),
         ],
         localizationsDelegates: [

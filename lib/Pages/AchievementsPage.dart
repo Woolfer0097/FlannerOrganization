@@ -4,13 +4,14 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'HabbitsScreen.dart';
 import 'Theme/Theme.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AchievementsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Achievements'),
+        title: Text(AppLocalizations.of(context)!.achievements),
       ),
       body: Consumer<HabitProvider>(
         builder: (context, habitProvider, child) {
