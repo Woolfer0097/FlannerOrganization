@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
+<<<<<<< Updated upstream:lib/fitness/main.dart
 
 void main() => runApp(FitnessApp());
 
 class FitnessApp extends StatelessWidget {
+=======
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'Theme/Theme.dart';
+import 'ButtonsComponent.dart' as Buttons;
+
+class SportScreen extends StatelessWidget {
+>>>>>>> Stashed changes:lib/Pages/SportsScreen.dart
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -62,6 +71,21 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
     return met * weight * (timeSpent / 60);
   }
 
+  Future<void> saveCaloriesBurned(double calories) async {
+    final prefs = await SharedPreferences.getInstance();
+    final today = DateTime.now().toIso8601String().substring(0, 10);
+    final key = 'calories_burned_$today';
+    double totalCalories = (prefs.getDouble(key) ?? 0) + calories;
+    await prefs.setDouble(key, totalCalories);
+  }
+
+  Future<double> getCaloriesBurnedToday() async {
+    final prefs = await SharedPreferences.getInstance();
+    final today = DateTime.now().toIso8601String().substring(0, 10);
+    final key = 'calories_burned_$today';
+    return prefs.getDouble(key) ?? 0;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -116,7 +140,7 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
                 setState(() {
                   if (double.tryParse(value) != null) {
                     height = double.parse(value);
-                  };
+                  }
                 });
               },
             ),
@@ -146,12 +170,18 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
             ),
             SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 double caloriesBurned = calculateCalories();
+                await saveCaloriesBurned(caloriesBurned);
+                double totalCaloriesBurnedToday = await getCaloriesBurnedToday();
+
                 showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
-                    content: Text('Calories Burned: ${caloriesBurned.toStringAsFixed(2)}'),
+                    content: Text(
+                      'Calories Burned: ${caloriesBurned.toStringAsFixed(2)}\n'
+                      'Total Calories Burned Today: ${totalCaloriesBurnedToday.toStringAsFixed(2)}',
+                    ),
                   ),
                 );
               },
