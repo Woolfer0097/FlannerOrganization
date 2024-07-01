@@ -14,7 +14,7 @@ import 'AchievementsPage.dart';
 
 import 'NotesScreen.dart';
 import 'CalendarScreen.dart';
-import 'HabbitsScreen.dart';
+import 'HabitsScreen.dart';
 import 'SportsScreen.dart';
 import 'AddNoteScreen.dart';
 import 'CalorieGainScreen.dart';
@@ -277,17 +277,6 @@ class HomeScreen extends ConsumerWidget {
                       },
                       child: Text(AppLocalizations.of(context)!.add_habit),
                     ),
-                    SizedBox(height: 30),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => AddNoteScreen()),
-                        );
-                      },
-                      child: Text(AppLocalizations.of(context)!.add_note),
-                    ),
                   ],
                 ),
               )
@@ -324,6 +313,17 @@ class HomeScreen extends ConsumerWidget {
                   ],
                 ],
               ),
+            ),
+            SizedBox(height: 30),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AddNoteScreen()),
+                );
+              },
+              child: Text(AppLocalizations.of(context)!.add_note),
             ),
           ],
         ),

@@ -33,6 +33,14 @@ class Note {
       tasks: List<Task>.from(map['tasks']?.map((x) => Task.fromMap(x))),
     );
   }
+
+  factory Note.toMap(Map<String, dynamic> map) {
+    return Note(
+      title: map['title'],
+      content: map['content'],
+      tasks: List<Task>.from(map['tasks']?.map((x) => Task.fromMap(x))),
+    );
+  }
 }
 
 class Task {

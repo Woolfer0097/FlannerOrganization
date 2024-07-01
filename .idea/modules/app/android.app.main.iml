@@ -106,5 +106,7 @@
     <orderEntry type="library" name="Gradle: io.flutter:x86_64_debug:1.0.0-b57a044ed10f87a5eefe99a24d6919537619f0a8" level="project" />
     <orderEntry type="library" name="Gradle: io.flutter:x86_debug:1.0.0-b57a044ed10f87a5eefe99a24d6919537619f0a8" level="project" />
     <orderEntry type="library" name="Gradle: C" level="project" />
+    <orderEntry type="library" name="Dart SDK" level="project" />
+    <orderEntry type="library" name="Dart Packages" level="project" />
   </component>
 </module>

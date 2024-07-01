@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'NotesScreen.dart';
 import 'TaskSelectionScreen.dart';
-import 'HabbitsScreen.dart';
+import 'HabitsScreen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 final habitProviderProvider = ChangeNotifierProvider((ref) => HabitProvider());

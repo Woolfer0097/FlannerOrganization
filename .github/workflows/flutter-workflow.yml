@@ -25,7 +25,7 @@ jobs:
         run: flutter pub get
 
       - name: Run tests
-        run: flutter test test/widget_test.dart
+        run: flutter test
 
   deploy:
     runs-on: ubuntu-latest
