@@ -319,11 +319,11 @@ class HabitCard extends StatelessWidget {
             Text(
               '${habit.getCompletedDays()} / ${(habit.endDate
                   .difference(DateTime.now())
-                  .inDays + 2)} {$AppLocalizations.of(context)!.days_completed}',
+                  .inDays + 2)} ${AppLocalizations.of(context)!.days_completed}',
               style: TextStyle(fontSize: 12),
             ),
             Text(
-              '${habit.getSkippedDays()} {$AppLocalizations.of(context)!.days_skipped}',
+              '${habit.getSkippedDays()} ${AppLocalizations.of(context)!.days_skipped}',
               style: TextStyle(fontSize: 12, color: Colors.red.shade400),
             ),
           ],
