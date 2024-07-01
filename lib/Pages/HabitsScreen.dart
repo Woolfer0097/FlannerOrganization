@@ -9,6 +9,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'dart:convert';
 import 'AddHabitScreen.dart';
+import 'AddNoteScreen.dart';
+import 'NotesScreen.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -30,6 +32,7 @@ class HabitProvider extends ChangeNotifier {
 
   DateTime get selectedDate => _selectedDate;
 
+
   void setSelectedDate(DateTime date) {
     _selectedDate = date;
     notifyListeners();
@@ -40,7 +43,6 @@ class HabitProvider extends ChangeNotifier {
     saveHabits();
     notifyListeners();
   }
-
   void updateHabit(context, Habit habit, bool completed) {
     habit.dates[DateUtils.dateOnly(_selectedDate)] = completed;
     if (!completed) {
@@ -273,23 +275,26 @@ class HabitTrackerScreen extends StatelessWidget {
                   verticalDirection: VerticalDirection.down,
                   children: [
                     HabitCard(habit: habit),
-                    SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => AddHabitScreen()),
-                        );
-                      },
-                      child: Text(AppLocalizations.of(context)!.add_habit),
-                    ),
                   ],
                 );
               },
             );
+
           }
+
         },
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: ElevatedButton(
+
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => AddHabitScreen()),
+          );
+        },
+        child: Text(AppLocalizations.of(context)!.add_habit),
       ),
     );
   }
