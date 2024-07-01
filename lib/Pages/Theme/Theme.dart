@@ -22,6 +22,10 @@ final ThemeData lightTheme = ThemeData(
     bodyMedium: TextStyle(color: Colors.black),
     titleLarge: TextStyle(color: Colors.black),
   ),
+  elevatedButtonTheme: ElevatedButtonThemeData(style: ElevatedButton.styleFrom(
+    backgroundColor: Colors.purple[100],
+    foregroundColor: Colors.black,
+  )),
   cardColor: Colors.white,
   iconTheme: IconThemeData(color: Colors.black),
 );
@@ -47,6 +51,10 @@ final ThemeData darkTheme = ThemeData(
     bodyMedium: TextStyle(color: Colors.white),
     titleLarge: TextStyle(color: Colors.white),
   ),
+  elevatedButtonTheme: ElevatedButtonThemeData(style: ElevatedButton.styleFrom(
+    backgroundColor: Colors.purple.shade800,
+    foregroundColor: Colors.white,
+  )),
   cardColor: Colors.grey[900],
   iconTheme: IconThemeData(color: Colors.white),
 );
