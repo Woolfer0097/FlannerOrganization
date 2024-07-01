@@ -203,7 +203,8 @@ class MainScreen extends ConsumerWidget {
             onTap: (index) => ref.read(bottomNavIndexProvider.notifier).setIndex(index),
             items: [
               BottomNavigationBarItem(icon: Icon(Icons.notes), label: AppLocalizations.of(context)!.notes),
-              BottomNavigationBarItem(icon: Icon(Icons.calendar_month), label: AppLocalizations.of(context)!.calendar),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.calendar_month), label: AppLocalizations.of(context)!.calendar),
               BottomNavigationBarItem(icon: Icon(Icons.home), label: AppLocalizations.of(context)!.home),
               BottomNavigationBarItem(icon: Icon(Icons.task), label: AppLocalizations.of(context)!.tasks),
               BottomNavigationBarItem(
