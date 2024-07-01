@@ -38,7 +38,7 @@ class MainScreen extends ConsumerWidget {
       color: theme.appBarTheme.titleTextStyle?.color,
     );
 
-    // Define the different screens
+
     final List<Widget> screens = [
       NotesScreen(),
       CalendarScreen(),
@@ -218,17 +218,8 @@ class HomeScreen extends ConsumerWidget {
                       },
                       child: Text('Add Habit'),
                     ),
-                    SizedBox(height: 50),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => AddNoteScreen()),
-                        );
-                      },
-                      child: Text('Add Note'),
-                    ),
+                    Spacer(),
+                    buttons.buildNoteButton('Add note', context),
                   ],
                 ),
               )
