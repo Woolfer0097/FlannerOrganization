@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'NotesScreen.dart';
 import 'TaskSelectionScreen.dart';
 import 'HabbitsScreen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 final habitProviderProvider = ChangeNotifierProvider((ref) => HabitProvider());
 
@@ -64,7 +65,7 @@ class _AddNoteScreenState extends ConsumerState<AddNoteScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.noteIndex == null ? 'Add Note' : 'Edit Note'),
+        title: Text(widget.noteIndex == null ? AppLocalizations.of(context)!.add_note : AppLocalizations.of(context)!.edit_note),
         actions: [
           IconButton(
             icon: Icon(Icons.add_task),
@@ -92,7 +93,7 @@ class _AddNoteScreenState extends ConsumerState<AddNoteScreen> {
               keyboardType: TextInputType.multiline,
               maxLines: null,
               decoration: InputDecoration(
-                labelText: 'Title',
+                labelText: AppLocalizations.of(context)!.title,
                 border: InputBorder.none, // No border for title
               ),
               style: TextStyle(fontSize: 24.0), // Larger font for title
@@ -112,7 +113,7 @@ class _AddNoteScreenState extends ConsumerState<AddNoteScreen> {
                           keyboardType: TextInputType.multiline,
                           maxLines: null,
                           decoration: InputDecoration(
-                            hintText: 'Content', // Placeholder text
+                            hintText: AppLocalizations.of(context)!.content, // Placeholder text
                             border: InputBorder.none, // No border for content
                           ),
                         ),
@@ -123,7 +124,7 @@ class _AddNoteScreenState extends ConsumerState<AddNoteScreen> {
               ),
             ),
             SizedBox(height: 10),
-            Text('Selected Tasks:'),
+            Text(AppLocalizations.of(context)!.selected_tasks),
             Wrap(
               spacing: 8.0,
               children: selectedTasks.map((task) {
@@ -162,7 +163,7 @@ class _AddNoteScreenState extends ConsumerState<AddNoteScreen> {
                       Navigator.of(context).pop();
                     }
                   },
-                  child: Text(widget.noteIndex == null ? 'Add Note' : 'Save Changes'),
+                  child: Text(widget.noteIndex == null ? AppLocalizations.of(context)!.add_note : AppLocalizations.of(context)!.save_changes),
                 ),
               ),
             ),

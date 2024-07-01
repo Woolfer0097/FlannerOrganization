@@ -154,7 +154,7 @@ class MainScreen extends ConsumerWidget {
       child: MaterialApp(
         locale: Locale('en'),
         supportedLocales: [
-          Locale('en', ''), // English
+          Locale('en', 'US'), // English
           Locale('ru', ''),
         ],
         localizationsDelegates: [
@@ -184,7 +184,8 @@ class MainScreen extends ConsumerWidget {
               BottomNavigationBarItem(icon: Icon(Icons.task), label: AppLocalizations.of(context)!.tasks),
               BottomNavigationBarItem(
                   icon: Icon(Icons.local_fire_department_rounded),
-                  label: "Sport"),
+                  label: AppLocalizations.of(context)!.sport
+              ),
             ],
           ),
         ),
@@ -219,7 +220,7 @@ class HomeScreen extends ConsumerWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'There are no habits or notes yet',
+                      AppLocalizations.of(context)!.no_notes_habits,
                       style: textStyle.copyWith(color: Colors.grey),
                     ),
                     SizedBox(height: 20),
@@ -231,7 +232,7 @@ class HomeScreen extends ConsumerWidget {
                               builder: (context) => AddHabitScreen()),
                         );
                       },
-                      child: Text('Add Habit'),
+                      child: Text(AppLocalizations.of(context)!.add_habit),
                     ),
                     SizedBox(height: 30),
                     ElevatedButton(
@@ -242,7 +243,7 @@ class HomeScreen extends ConsumerWidget {
                               builder: (context) => AddNoteScreen()),
                         );
                       },
-                      child: Text('Add Note'),
+                      child: Text(AppLocalizations.of(context)!.add_note),
                     ),
                   ],
                 ),
@@ -250,7 +251,7 @@ class HomeScreen extends ConsumerWidget {
                   : ListView(
                 children: [
                   if (habits.isNotEmpty) ...[
-                    Text('Habits', style: textStyle),
+                    Text(AppLocalizations.of(context)!.habits, style: textStyle),
                     SizedBox(height: 10),
                     ...habits.map((habit) {
                       return HabitCard(habit: habit);
@@ -258,7 +259,7 @@ class HomeScreen extends ConsumerWidget {
                   ],
                   if (notes.isNotEmpty) ...[
                     SizedBox(height: 20),
-                    Text('Notes', style: textStyle),
+                    Text(AppLocalizations.of(context)!.notes, style: textStyle),
                     SizedBox(height: 10),
                     ...notes.map((note) {
                       return NoteCard(

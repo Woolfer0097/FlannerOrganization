@@ -4,10 +4,11 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Flanner.iml" filepath="$PROJECT_DIR$/.idea/Flanner.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/android.iml" filepath="$PROJECT_DIR$/.idea/modules/android.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/android.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/android.app.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/android.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/android.app.androidTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/android.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/android.app.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/android.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/android.app.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1593992433/android.firebase_core.iml" filepath="$PROJECT_DIR$/.idea/modules/1593992433/android.firebase_core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-679830733/android.firebase_messaging.iml" filepath="$PROJECT_DIR$/.idea/modules/-679830733/android.firebase_messaging.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/792329236/android.flutter_localization.iml" filepath="$PROJECT_DIR$/.idea/modules/792329236/android.flutter_localization.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/792329236/android.flutter_localization.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/792329236/android.flutter_localization.androidTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/792329236/android.flutter_localization.main.iml" filepath="$PROJECT_DIR$/.idea/modules/792329236/android.flutter_localization.main.iml" />

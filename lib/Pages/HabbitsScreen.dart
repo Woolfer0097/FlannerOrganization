@@ -10,6 +10,8 @@ import 'package:table_calendar/table_calendar.dart';
 import 'dart:convert';
 import 'AddHabitScreen.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class HabitProvider extends ChangeNotifier {
   List<Habit> _habits = [];
   List<Achievement> _achievements = [];
@@ -39,13 +41,13 @@ class HabitProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateHabit(Habit habit, bool completed) {
+  void updateHabit(context, Habit habit, bool completed) {
     habit.dates[DateUtils.dateOnly(_selectedDate)] = completed;
     if (!completed) {
       habit.dates[DateUtils.dateOnly(_selectedDate)] = true;
     }
     if (habit.getProgress() == 1.0) {
-      habit.completeGoal();
+      habit.completeGoal(context);
       _achievements.add(habit.achievements.last);
       _habits.remove(habit);
       saveAchievements();
@@ -182,11 +184,11 @@ class Habit {
     return getCompletedDays() / totalPlannedDays;
   }
 
-  void completeGoal() {
+  void completeGoal(context) {
     isCompleted = true;
     achievements.add(Achievement(
-      title: '$title Goal Completed!',
-      description: 'Congratulations! You have completed the $title habit goal.',
+      title: AppLocalizations.of(context)!.completed(title),
+      description: AppLocalizations.of(context)!.description(title),
       dateAchieved: endDate,
     ));
   }
@@ -251,7 +253,7 @@ class HabitTrackerScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'There are no habits yet',
+                    AppLocalizations.of(context)!.no_habits,
                     style: textStyle.copyWith(color: Colors.grey),
                   ),
                   SizedBox(height: 20),
@@ -263,7 +265,7 @@ class HabitTrackerScreen extends StatelessWidget {
                             builder: (context) => AddHabitScreen()),
                       );
                     },
-                    child: Text('Add Habit'),
+                    child: Text(AppLocalizations.of(context)!.add_habit),
                   ),
                 ],
               ),
@@ -290,7 +292,7 @@ class HabitTrackerScreen extends StatelessWidget {
                               builder: (context) => AddHabitScreen()),
                         );
                       },
-                      child: Text('Add Habit'),
+                      child: Text(AppLocalizations.of(context)!.add_habit),
                     ),
                   ],
                 );
@@ -327,11 +329,11 @@ class HabitCard extends StatelessWidget {
             Text(
               '${habit.getCompletedDays()} / ${(habit.endDate
                   .difference(DateTime.now())
-                  .inDays + 2)} days completed',
+                  .inDays + 2)} {$AppLocalizations.of(context)!.days_completed}',
               style: TextStyle(fontSize: 12),
             ),
             Text(
-              '${habit.getSkippedDays()} days skipped',
+              '${habit.getSkippedDays()} {$AppLocalizations.of(context)!.days_skipped}',
               style: TextStyle(fontSize: 12, color: Colors.red.shade400),
             ),
           ],
@@ -345,18 +347,18 @@ class HabitCard extends StatelessWidget {
                 TextButton.styleFrom(foregroundColor: Colors.red.shade400),
                 onPressed: () {
                   Provider.of<HabitProvider>(context, listen: false)
-                      .updateHabit(habit, false);
+                      .updateHabit(context, habit, false);
                 },
-                child: const Text('Skip'),
+                child: Text(AppLocalizations.of(context)!.skip),
               ),
               TextButton(
                 style: TextButton.styleFrom(
                     foregroundColor: Colors.green.shade400),
                 onPressed: () {
                   Provider.of<HabitProvider>(context, listen: false)
-                      .updateHabit(habit, true);
+                      .updateHabit(context, habit, true);
                 },
-                child: Text('Complete'),
+                child: Text(AppLocalizations.of(context)!.complete),
               ),
             ],
           ],

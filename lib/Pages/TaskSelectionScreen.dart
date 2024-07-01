@@ -3,6 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'NotesScreen.dart';
 import 'AddNoteScreen.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+
 class TaskSelectionScreen extends ConsumerStatefulWidget {
   final List<Task> selectedTasks;
 
@@ -27,7 +30,7 @@ class _TaskSelectionScreenState extends ConsumerState<TaskSelectionScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Select Tasks'),
+        title: Text(AppLocalizations.of(context)!.select_tasks),
         actions: [
           IconButton(
             icon: Icon(Icons.check),
@@ -38,28 +41,26 @@ class _TaskSelectionScreenState extends ConsumerState<TaskSelectionScreen> {
         ],
       ),
       body: ListView.builder(
-              itemCount: allTasks.length,
-              itemBuilder: (context, index) {
-                final task = allTasks[index];
-                final isSelected = tempSelectedTasks.contains(task);
+        itemCount: allTasks.length,
+        itemBuilder: (context, index) {
+          final task = allTasks[index];
+          final isSelected = tempSelectedTasks.contains(task);
 
-                return CheckboxListTile(
-                title: Text(task.title),
-                value: isSelected,
-                onChanged: (bool? value) {
-                  setState(() {
-                  if (value == true) {
-                    tempSelectedTasks.add(task);
-                    } else {
-                      tempSelectedTasks.remove(task);
-                    }
-                  });
-                },
-                );
-              },
-            ),
+          return CheckboxListTile(
+            title: Text(task.title),
+            value: isSelected,
+            onChanged: (bool? value) {
+              setState(() {
+                if (value == true) {
+                  tempSelectedTasks.add(task);
+                } else {
+                  tempSelectedTasks.remove(task);
+                }
+              });
+            },
+          );
+        },
+      ),
     );
-        
-      
   }
 }
