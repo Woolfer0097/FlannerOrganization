@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'dart:convert';
+import 'AddHabitScreen.dart';
 
 class HabitProvider extends ChangeNotifier {
   List<Habit> _habits = [];
@@ -173,7 +174,10 @@ class Habit {
   double getProgress() {
     final totalPlannedDays = endDate
         .difference(DateTime.now())
-        .inDays + 1;
+        .inDays + 2;
+    if (kDebugMode) {
+      print('totalPlannedDays: $totalPlannedDays');
+    }
     if (totalPlannedDays == 0) return 0;
     return getCompletedDays() / totalPlannedDays;
   }
@@ -190,7 +194,7 @@ class Habit {
   int getCurrentDays() {
     final totalPlannedDays = endDate
         .difference(DateTime.now())
-        .inDays + 1;
+        .inDays + 2;
     return totalPlannedDays - getSkippedDays();
   }
 }
@@ -224,18 +228,77 @@ class Achievement {
 }
 
 class HabitTrackerScreen extends StatelessWidget {
+  final Buttons.ButtonsComponent buttons; // Assuming ButtonsComponent is a custom class
+  final ThemeData theme;
+  final TextStyle textStyle;
+
+  HabitTrackerScreen({
+    required this.buttons,
+    required this.theme,
+    required this.textStyle,
+  });
+
   @override
   Widget build(BuildContext context) {
-    return Consumer<HabitProvider>(
-      builder: (context, habitProvider, child) {
-        return ListView.builder(
-          itemCount: habitProvider.habits.length,
-          itemBuilder: (context, index) {
-            Habit habit = habitProvider.habits[index];
-            return HabitCard(habit: habit);
-          },
-        );
-      },
+    return Scaffold(
+      body: Consumer<HabitProvider>(
+        builder: (context, habitProvider, child) {
+          // Check if the habits list is empty
+          if (habitProvider.habits.isEmpty) {
+            // Display a message and a button if there are no habits
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'There are no habits yet',
+                    style: textStyle.copyWith(color: Colors.grey),
+                  ),
+                  SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AddHabitScreen()),
+                      );
+                    },
+                    child: Text('Add Habit'),
+                  ),
+                ],
+              ),
+            );
+          } else {
+            // Display the list of habits if there are any
+            return ListView.builder(
+              itemCount: habitProvider.habits.length,
+              itemBuilder: (context, index) {
+                Habit habit = habitProvider.habits[index];
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  verticalDirection: VerticalDirection.down,
+                  children: [
+                    HabitCard(habit: habit),
+                    SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AddHabitScreen()),
+                        );
+                      },
+                      child: Text('Add Habit'),
+                    ),
+                  ],
+                );
+              },
+            );
+          }
+        },
+      ),
     );
   }
 }
@@ -264,7 +327,7 @@ class HabitCard extends StatelessWidget {
             Text(
               '${habit.getCompletedDays()} / ${(habit.endDate
                   .difference(DateTime.now())
-                  .inDays + 1)} days completed',
+                  .inDays + 2)} days completed',
               style: TextStyle(fontSize: 12),
             ),
             Text(
@@ -292,17 +355,6 @@ class HabitCard extends StatelessWidget {
                 onPressed: () {
                   Provider.of<HabitProvider>(context, listen: false)
                       .updateHabit(habit, true);
-                  if (habit.getCompletedDays() == habit.getCurrentDays()) {
-                    // if (kDebugMode) {
-                    //   print("GOAL COMPLETED");
-                    // }
-                    habit.completeGoal();
-                    Provider.of<HabitProvider>(context, listen: false)
-                        .removeHabit(habit);
-                    // if (kDebugMode) {
-                    //   print(habit.achievements);
-                    // }
-                  }
                 },
                 child: Text('Complete'),
               ),

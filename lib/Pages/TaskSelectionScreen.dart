@@ -38,26 +38,28 @@ class _TaskSelectionScreenState extends ConsumerState<TaskSelectionScreen> {
         ],
       ),
       body: ListView.builder(
-        itemCount: allTasks.length,
-        itemBuilder: (context, index) {
-          final task = allTasks[index];
-          final isSelected = tempSelectedTasks.contains(task);
+              itemCount: allTasks.length,
+              itemBuilder: (context, index) {
+                final task = allTasks[index];
+                final isSelected = tempSelectedTasks.contains(task);
 
-          return CheckboxListTile(
-            title: Text(task.title),
-            value: isSelected,
-            onChanged: (bool? value) {
-              setState(() {
-                if (value == true) {
-                  tempSelectedTasks.add(task);
-                } else {
-                  tempSelectedTasks.remove(task);
-                }
-              });
-            },
-          );
-        },
-      ),
+                return CheckboxListTile(
+                title: Text(task.title),
+                value: isSelected,
+                onChanged: (bool? value) {
+                  setState(() {
+                  if (value == true) {
+                    tempSelectedTasks.add(task);
+                    } else {
+                      tempSelectedTasks.remove(task);
+                    }
+                  });
+                },
+                );
+              },
+            ),
     );
+        
+      
   }
 }

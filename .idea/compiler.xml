@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="android.app" target="19" />
+      <module name="android.firebase_core" target="19" />
+      <module name="android.firebase_messaging" target="19" />
+      <module name="android.shared_preferences_android" target="19" />
+      <module name="gradle" target="19" />
+      <module name="gradle.main" target="19" />
+      <module name="gradle.test" target="19" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

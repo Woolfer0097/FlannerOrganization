@@ -2,14 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'NotesScreen.dart';
 import 'TaskSelectionScreen.dart';
+import 'HabbitsScreen.dart';
+
+final habitProviderProvider = ChangeNotifierProvider((ref) => HabitProvider());
 
 final tasksProvider = Provider<List<Task>>((ref) {
-  return [
-    Task(title: 'Task 1', color: Color.fromRGBO(44, 54, 57, 1.0)),
-    Task(title: 'Task 2', color: Color.fromRGBO(63, 78, 79, 1.0)),
-    Task(title: 'Task 3', color: Color.fromRGBO(162, 123, 92, 1.0)),
-    // Add more tasks as needed
-  ];
+  final habitProvider = ref.watch(habitProviderProvider); 
+
+  List<Task> tasks = habitProvider.habits.map((habit) {
+    return Task(
+      title: habit.title,
+      color: Colors.purple, 
+    );
+  }).toList();
+
+  List<Task> _completedTasks = habitProvider.achievements.map((habit) {
+    return Task(color: Colors.purple.shade800, title: habit.title);
+  }).toList();
+
+  tasks.addAll(_completedTasks);
+
+  return tasks;
 });
 
 class AddNoteScreen extends ConsumerStatefulWidget {
@@ -76,18 +89,36 @@ class _AddNoteScreenState extends ConsumerState<AddNoteScreen> {
           children: [
             TextField(
               controller: _titleController,
+              keyboardType: TextInputType.multiline,
+              maxLines: null,
               decoration: InputDecoration(
                 labelText: 'Title',
+                border: InputBorder.none, // No border for title
               ),
+              style: TextStyle(fontSize: 24.0), // Larger font for title
             ),
             SizedBox(height: 10),
             Expanded(
-              child: TextField(
-                controller: _contentController,
-                keyboardType: TextInputType.multiline,
-                maxLines: null,
-                decoration: InputDecoration(
-                  labelText: 'Content',
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    ConstrainedBox(
+                      constraints: BoxConstraints(
+                        minHeight: 200, // Minimum height to show the text area
+                      ),
+                      child: IntrinsicHeight(
+                        child: TextField(
+                          controller: _contentController,
+                          keyboardType: TextInputType.multiline,
+                          maxLines: null,
+                          decoration: InputDecoration(
+                            hintText: 'Content', // Placeholder text
+                            border: InputBorder.none, // No border for content
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -105,9 +136,8 @@ class _AddNoteScreenState extends ConsumerState<AddNoteScreen> {
                 );
               }).toList(),
             ),
-            Spacer(),
             Padding(
-              padding: const EdgeInsets.only(bottom: 16.0),
+              padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
               child: SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
