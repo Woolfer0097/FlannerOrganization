@@ -4,6 +4,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'Theme/Theme.dart';
 import 'ButtonsComponent.dart' as Buttons;
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class SportScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -23,23 +25,35 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
   String? selectedIntensity;
   double weight = 70.0; // default value
   double height = 170.0; // default value
-  String gender = 'Male'; // default value
-  int reps = 0;
+  String? gender; // initially null to avoid issues before localizations load
   double timeSpent = 0.0;
 
-  final List<String> workouts = [
-    'Running',
-    'Cycling',
-    'Swimming',
-    'Walking',
-    // Add more workouts
-  ];
+  late List<String> workouts;
+  late List<String> intensities;
+  AppLocalizations? localizations;
 
-  final List<String> intensities = [
-    'Low',
-    'Medium',
-    'High',
-  ];
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    localizations = AppLocalizations.of(context);
+
+    workouts = [
+      localizations!.running,
+      localizations!.cycling,
+      localizations!.swimming,
+      localizations!.walking,
+      // Add more workouts
+    ];
+
+    intensities = [
+      localizations!.low,
+      localizations!.medium,
+      localizations!.high,
+    ];
+
+    // Set default gender value after localizations are loaded
+    gender = localizations!.male;
+  }
 
   double calculateCalories() {
     double met = 0.0;
@@ -56,7 +70,6 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
       case 'Walking':
         met = selectedIntensity == 'High' ? 3.8 : selectedIntensity == 'Medium' ? 3.0 : 2.5;
         break;
-    // Add more cases for different workouts
       default:
         met = 1.0;
     }
@@ -79,17 +92,22 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
     return prefs.getDouble(key) ?? 0;
   }
 
-
   @override
   Widget build(BuildContext context) {
+    if (localizations == null) {
+      return Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             DropdownButton<String>(
-              value: selectedWorkout,
-              hint: Text('Select Workout'),
+              value: workouts.contains(selectedWorkout) ? selectedWorkout : null,
+              hint: Text(AppLocalizations.of(context)!.select_workout),
               onChanged: (newValue) {
                 setState(() {
                   selectedWorkout = newValue;
@@ -103,8 +121,8 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
               }).toList(),
             ),
             DropdownButton<String>(
-              value: selectedIntensity,
-              hint: Text('Select Intensity'),
+              value: intensities.contains(selectedIntensity) ? selectedIntensity : null,
+              hint: Text(AppLocalizations.of(context)!.select_intensity),
               onChanged: (newValue) {
                 setState(() {
                   selectedIntensity = newValue;
@@ -119,7 +137,7 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
             ),
             TextField(
               keyboardType: TextInputType.number,
-              decoration: InputDecoration(labelText: 'Weight (kg)'),
+              decoration: InputDecoration(labelText: AppLocalizations.of(context)!.weight),
               onChanged: (value) {
                 setState(() {
                   weight = double.parse(value);
@@ -128,7 +146,7 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
             ),
             TextField(
               keyboardType: TextInputType.number,
-              decoration: InputDecoration(labelText: 'Height (cm)'),
+              decoration: InputDecoration(labelText: AppLocalizations.of(context)!.height),
               onChanged: (value) {
                 setState(() {
                   if (double.tryParse(value) != null) {
@@ -139,13 +157,13 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
             ),
             DropdownButton<String>(
               value: gender,
-              hint: Text('Select Gender'),
+              hint: Text(AppLocalizations.of(context)!.select_gender),
               onChanged: (newValue) {
                 setState(() {
                   gender = newValue!;
                 });
               },
-              items: ['Male', 'Female'].map((gender) {
+              items: [localizations!.male, localizations!.female].map((gender) {
                 return DropdownMenuItem(
                   child: Text(gender),
                   value: gender,
@@ -154,7 +172,7 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
             ),
             TextField(
               keyboardType: TextInputType.number,
-              decoration: InputDecoration(labelText: 'Time Spent (minutes)'),
+              decoration: InputDecoration(labelText: AppLocalizations.of(context)!.time_spent),
               onChanged: (value) {
                 setState(() {
                   timeSpent = double.parse(value);
@@ -172,13 +190,13 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
                   context: context,
                   builder: (context) => AlertDialog(
                     content: Text(
-                      'Calories Burned: ${caloriesBurned.toStringAsFixed(2)}\n'
-                          'Total Calories Burned Today: ${totalCaloriesBurnedToday.toStringAsFixed(2)}',
+                      localizations!.calories_burned + ": " + caloriesBurned.toStringAsFixed(2) + ' kcal \n' + 
+                      localizations!.total_calories_burned + ": " + totalCaloriesBurnedToday.toStringAsFixed(2) + ' kcal',
                     ),
                   ),
                 );
               },
-              child: Text('Calculate'),
+              child: Text(AppLocalizations.of(context)!.calculate),
             ),
           ],
         ),
