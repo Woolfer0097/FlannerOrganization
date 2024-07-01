@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-
-
 // Light Theme
 final ThemeData lightTheme = ThemeData(
   brightness: Brightness.light,

@@ -199,3 +199,57 @@ class NotesScreen extends ConsumerWidget {
     );
   }
 }
+
+class NoteCard extends StatelessWidget {
+  final Note note;
+  final VoidCallback onTap;
+  final VoidCallback onDelete;
+
+  NoteCard({
+    required this.note,
+    required this.onTap,
+    required this.onDelete,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15.0),
+      ),
+      child: ListTile(
+        title: Text(
+          note.title,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 18.0,
+          ),
+        ),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              note.content,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+            SizedBox(height: 8.0),
+            Wrap(
+              children: note.tasks.map((task) {
+                return Chip(
+                  label: Text(task.title),
+                  backgroundColor: task.color,
+                );
+              }).toList(),
+            ),
+          ],
+        ),
+        onTap: onTap,
+        trailing: IconButton(
+          icon: Icon(Icons.delete),
+          onPressed: onDelete,
+        ),
+      ),
+    );
+  }
+}
