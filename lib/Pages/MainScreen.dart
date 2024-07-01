@@ -16,6 +16,7 @@ import 'CalendarScreen.dart';
 import 'HabbitsScreen.dart';
 import 'SportsScreen.dart';
 import 'AddNoteScreen.dart';
+import 'CalorieGainScreen.dart';
 
 class BottomNavIndexNotifier extends StateNotifier<int> {
   BottomNavIndexNotifier() : super(2); // Default index is 2 (Home)
@@ -49,6 +50,7 @@ class MainScreen extends ConsumerWidget {
       HomeScreen(theme: theme, textStyle: textStyle),
       HabitTrackerScreen(buttons: buttons, theme: theme, textStyle: textStyle),
       SportScreen(),
+      CalorieGainScreen(),
     ];
     final List<AppBar> appBars = [
       AppBar(
@@ -147,6 +149,17 @@ class MainScreen extends ConsumerWidget {
           ),
         ],
       ),
+      AppBar(
+        title: Text(AppLocalizations.of(context)!.calories_gained_calculator, style: textStyle),
+        backgroundColor: theme.scaffoldBackgroundColor,
+        actions: [
+          ElevatedButton(
+            onPressed: () =>
+                ref.read(themeNotifierProvider.notifier).changeTheme(),
+            child: Icon(Icons.dark_mode),
+          ),
+        ],
+      ),
     ];
 
     return ChangeNotifierProvider(
@@ -186,6 +199,7 @@ class MainScreen extends ConsumerWidget {
                   icon: Icon(Icons.local_fire_department_rounded),
                   label: AppLocalizations.of(context)!.sport
               ),
+              BottomNavigationBarItem(icon: Icon(Icons.local_dining), label: "Calories"),
             ],
           ),
         ),
