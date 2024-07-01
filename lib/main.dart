@@ -7,6 +7,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flanner/Pages/MainScreen.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 void main() {
   runApp(ProviderScope(child: MyApp()));
 }
@@ -16,6 +18,17 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ProviderScope(
       child: MaterialApp(
+        locale: Locale('en'),
+        supportedLocales: [
+          Locale('en', ''), // English
+          Locale('ru', ''),
+        ],
+        localizationsDelegates: [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
         home: Scaffold(
           body: AnimatedImages(),
         ),
