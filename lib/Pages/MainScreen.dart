@@ -36,7 +36,7 @@ class MainScreen extends ConsumerWidget {
       color: theme.appBarTheme.titleTextStyle?.color,
     );
 
-    // Define the different screens
+
     final List<Widget> screens = [
       NotesScreen(),
       CalendarScreen(),
