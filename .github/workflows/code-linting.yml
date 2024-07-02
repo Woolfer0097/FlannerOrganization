@@ -2,9 +2,9 @@ name: Flutter Code Linting
 
 on:
   push:
-    branches: [ feature-ci-cd, develop, main ]
+    branches: [ master ]
   pull_request:
-    branches: [ feature-ci-cd, develop, main ]
+    branches: [ master ]
 
 jobs:
   test:
